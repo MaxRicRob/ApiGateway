@@ -1,4 +1,4 @@
-package domain;
+package com.example.ApiGateway.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,19 +14,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ProductResponse {
+public class Product {
 
     private UUID id;
     private String name;
     private String userName;
     private List<ProductComponent> productComponents;
 
-    public static ProductResponse from(Product product) {
-        return new ProductResponse()
-                .setId(product.getId())
-                .setName(product.getName())
-                .setUserName(product.getUserName())
-                .setProductComponents(product.getProductComponents());
+    public static Product from(ProductResponse productResponse) {
+        return new Product()
+                .setId(productResponse.getId())
+                .setName(productResponse.getName())
+                .setUserName(productResponse.getUserName())
+                .setProductComponents(productResponse.getProductComponents());
     }
-
 }

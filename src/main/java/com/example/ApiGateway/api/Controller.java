@@ -1,13 +1,13 @@
-package api;
+package com.example.ApiGateway.api;
 
 
-import domain.DefaultProduct;
-import domain.Product;
-import domain.ProductComponent;
-import domain.ProductResponse;
+import com.example.ApiGateway.domain.DefaultProduct;
+import com.example.ApiGateway.domain.Product;
+import com.example.ApiGateway.domain.ProductComponent;
+import com.example.ApiGateway.domain.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import service.ApiService;
+import com.example.ApiGateway.service.ApiService;
 
 import java.util.List;
 

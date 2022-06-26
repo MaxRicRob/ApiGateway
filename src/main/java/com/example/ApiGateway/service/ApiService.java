@@ -1,9 +1,9 @@
-package service;
+package com.example.ApiGateway.service;
 
-import domain.DefaultProduct;
-import domain.Product;
-import domain.ProductComponent;
-import domain.ProductResponse;
+import com.example.ApiGateway.domain.DefaultProduct;
+import com.example.ApiGateway.domain.Product;
+import com.example.ApiGateway.domain.ProductComponent;
+import com.example.ApiGateway.domain.ProductResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
