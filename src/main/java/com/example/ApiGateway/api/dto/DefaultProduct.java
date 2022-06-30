@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,8 +15,8 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class DefaultProduct {
 
-    private UUID id;
+    private int id;
     private String name;
-    private List<ProductComponent> productComponents;
+    private List<ProductComponent> components;
 
 }
