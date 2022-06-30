@@ -32,17 +32,19 @@ public class ProductService {
 
     public List<ProductComponent> getAllComponents() {
 
-        Message m =  rabbitTemplate.sendAndReceive(
+        Message receivedMessage =  rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 routingKeyProductService,
                 new Message("getProductComponent".getBytes())
         );
-        if (m == null) {
+        if (receivedMessage == null) {
             log.error("error while receiving productComponents from ProductService");
             return Collections.emptyList();
         }
-        String json = new String(m.getBody(), StandardCharsets.UTF_8);
-        return new Gson().fromJson(json, new TypeToken<List<ProductComponent>>(){}.getType());
+        return new Gson().fromJson(
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
+                new TypeToken<List<ProductComponent>>(){}.getType()
+        );
     }
 
 
