@@ -19,13 +19,13 @@ public class Product {
     private UUID id;
     private String name;
     private String userName;
-    private List<ProductComponent> productComponents;
+    private List<ProductComponent> components;
 
     public static Product from(ProductResponse productResponse) {
         return new Product()
                 .setId(productResponse.getId())
                 .setName(productResponse.getName())
                 .setUserName(productResponse.getUserName())
-                .setProductComponents(productResponse.getProductComponents());
+                .setComponents(productResponse.getComponents());
     }
 }

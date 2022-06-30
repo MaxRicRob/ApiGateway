@@ -19,14 +19,14 @@ public class ProductResponse {
     private UUID id;
     private String name;
     private String userName;
-    private List<ProductComponent> productComponents;
+    private List<ProductComponent> components;
 
     public static ProductResponse from(Product product) {
         return new ProductResponse()
                 .setId(product.getId())
                 .setName(product.getName())
                 .setUserName(product.getUserName())
-                .setProductComponents(product.getProductComponents());
+                .setComponents(product.getComponents());
     }
 
 }
