@@ -19,8 +19,9 @@ public class RabbitConfiguration {
     @Value("${xchange.name}")
     private String DIRECT_XCHANGE_NAME;
 
-    @Value("${routing-keys.product-service}")
-    private String routingKeyProductService;
+    @Value("${routing-keys.components}")
+    private String componentsRoutingKey;
+
 
     @Value("${queue-names.components}")
     private String componentsQueueName;
@@ -38,7 +39,7 @@ public class RabbitConfiguration {
 
     @Bean
     public Binding componentsBinding(DirectExchange directExchange, Queue componentsQueue) {
-        return BindingBuilder.bind(componentsQueue).to(directExchange).with(routingKeyProductService);
+        return BindingBuilder.bind(componentsQueue).to(directExchange).with(componentsRoutingKey);
     }
 
 

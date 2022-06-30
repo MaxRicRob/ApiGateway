@@ -26,15 +26,15 @@ public class ProductService {
     @Autowired
     private DirectExchange directExchange;
 
-    @Value("${routing-keys.product-service}")
-    private String routingKeyProductService;
+    @Value("${routing-keys.components}")
+    private String componentsRoutingKey;
 
 
     public List<ProductComponent> getAllComponents() {
 
         var receivedMessage =  rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
-                routingKeyProductService,
+                componentsRoutingKey,
                 new Message("getProductComponent".getBytes())
         );
         if (receivedMessage == null) {

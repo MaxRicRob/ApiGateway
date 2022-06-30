@@ -7,7 +7,7 @@ queue-names:
   components: components.rpc.queue
 
 routing-keys:
-  product-service: product.service
+  components: components.rpc.key
 
 xchange:
   name: exchange.rpc
