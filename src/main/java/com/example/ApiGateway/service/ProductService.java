@@ -32,7 +32,7 @@ public class ProductService {
 
     public List<ProductComponent> getAllComponents() {
 
-        Message receivedMessage =  rabbitTemplate.sendAndReceive(
+        var receivedMessage =  rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 routingKeyProductService,
                 new Message("getProductComponent".getBytes())
