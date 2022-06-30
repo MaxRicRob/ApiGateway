@@ -26,7 +26,7 @@ public class ApiService {
     }
 
     public List<DefaultProduct> getDefaultProducts() {
-        return null;
+        return productService.getDefaultProducts();
     }
 
     public List<ProductComponent> getProductComponents() {

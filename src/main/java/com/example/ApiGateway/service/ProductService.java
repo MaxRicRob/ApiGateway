@@ -1,6 +1,7 @@
 package com.example.ApiGateway.service;
 
 
+import com.example.ApiGateway.api.dto.DefaultProduct;
 import com.example.ApiGateway.api.dto.ProductComponent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,7 +13,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +29,9 @@ public class ProductService {
     @Value("${routing-keys.components}")
     private String componentsRoutingKey;
 
+    @Value("${routing-keys.default-products}")
+    private String defaultProductsRoutingKey;
+
 
     public List<ProductComponent> getAllComponents() {
 
@@ -44,6 +47,23 @@ public class ProductService {
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
                 new TypeToken<List<ProductComponent>>(){}.getType()
+        );
+    }
+
+    public List<DefaultProduct> getDefaultProducts() {
+
+        var receivedMessage = rabbitTemplate.sendAndReceive(
+                directExchange.getName(),
+                defaultProductsRoutingKey,
+                new Message("getDefaultProducts".getBytes())
+        );
+        if (receivedMessage == null) {
+            log.error("error while receiving defaultProducts from ProductService");
+            return Collections.emptyList();
+        }
+        return new Gson().fromJson(
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
+                new TypeToken<List<DefaultProduct>>(){}.getType()
         );
     }
 
