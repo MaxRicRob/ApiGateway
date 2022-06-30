@@ -1,2 +1,13 @@
 server:
   port: 8085
+
+
+#rabbitMQ
+queue-names:
+  components: components.rpc.queue
+
+routing-keys:
+  product-service: product.service
+
+xchange:
+  name: exchange.rpc

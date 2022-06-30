@@ -8,13 +8,17 @@ import com.example.ApiGateway.api.dto.PriceResponse;
 import com.example.ApiGateway.api.dto.Product;
 import com.example.ApiGateway.api.dto.ProductComponent;
 import com.example.ApiGateway.api.dto.ProductResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ApiService {
+
+    final ProductService productService;
 
 
     public void delete(String id) {
@@ -26,7 +30,7 @@ public class ApiService {
     }
 
     public List<ProductComponent> getProductComponents() {
-        return null;
+        return productService.getAllComponents();
     }
 
     public List<Product> getProductsFromUser(String userName) {
