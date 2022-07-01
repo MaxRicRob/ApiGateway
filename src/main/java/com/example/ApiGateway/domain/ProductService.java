@@ -24,11 +24,10 @@ public class ProductService {
     @Autowired
     private DirectExchange directExchange;
 
-    @Value("${routing-keys.components}")
-    private String componentsRoutingKey;
+    @Value("${routing-keys.product-service}")
+    private String productServiceRoutingKey;
 
-    @Value("${routing-keys.default-products}")
-    private String defaultProductsRoutingKey;
+
 
     @Value("${routing-keys.user-products}")
     private String userProductsRoutingKey;
@@ -38,8 +37,8 @@ public class ProductService {
 
         var receivedMessage =  rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
-                componentsRoutingKey,
-                new Message("getProductComponent".getBytes())
+                productServiceRoutingKey,
+                new Message("getComponents".getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving productComponents from ProductService");
@@ -55,7 +54,7 @@ public class ProductService {
 
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
-                defaultProductsRoutingKey,
+                productServiceRoutingKey,
                 new Message("getDefaultProducts".getBytes())
         );
         if (receivedMessage == null) {

@@ -4,13 +4,11 @@ server:
 
 #rabbitMQ
 queue-names:
-  components: components.rpc.queue
-  default-products: default-products.rpc.queue
+  product-service: components.rpc.queue
   user-products: user-products.rpc.queue
 
 routing-keys:
-  components: components.rpc.key
-  default-products: default-products.rpc.key
+  product-service: components.rpc.key
   user-products: user-products.rpc.key
 
 xchange:
