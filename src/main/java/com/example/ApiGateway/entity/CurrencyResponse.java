@@ -1,7 +1,6 @@
 package com.example.ApiGateway.entity;
 
 
-import com.example.ApiGateway.entity.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
