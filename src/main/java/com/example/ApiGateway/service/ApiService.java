@@ -43,6 +43,7 @@ public class ApiService {
     }
 
     public void updateProduct(Product product) {
+        productService.updateProduct(product);
     }
 
     public PriceResponse getPrice(PriceRequest priceRequest) {

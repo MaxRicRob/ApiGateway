@@ -98,4 +98,14 @@ public class ProductService {
                 new Message(("createProduct-"+ new Gson().toJson(product)).getBytes())
         );
     }
+
+    public void updateProduct(Product product) {
+        rabbitTemplate.send(
+                directExchange.getName(),
+                productServiceRoutingKey,
+                new Message(("updateProduct-"+ new Gson().toJson(product)).getBytes())
+        );
+
+
+    }
 }
