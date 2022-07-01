@@ -16,23 +16,12 @@ public class RabbitConfiguration {
     @Value("${xchange.name}")
     private String directXchangeName;
 
-    @Value("${routing-keys.components}")
-    private String componentsRoutingKey;
+    @Value("${routing-keys.product-service}")
+    private String productServiceRoutingKey;
 
-    @Value("${queue-names.components}")
-    private String componentsQueueName;
+    @Value("${queue-names.product-service}")
+    private String productServiceQueueName;
 
-    @Value("${routing-keys.default-products}")
-    private String defaultProductsRoutingKey;
-
-    @Value("${queue-names.default-products}")
-    private String defaultProductsQueueName;
-
-    @Value("${routing-keys.user-products}")
-    private String userProductsRoutingKey;
-
-    @Value("${queue-names.user-products}")
-    private String userProductsQueueName;
 
     @Bean
     public ProductService productService() {
@@ -45,32 +34,14 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public Queue componentsQueue() {
-        return new Queue(componentsQueueName);
+    public Queue productServiceQueue() {
+        return new Queue(productServiceQueueName);
     }
 
     @Bean
-    public Binding componentsBinding(DirectExchange directExchange, Queue componentsQueue) {
-        return BindingBuilder.bind(componentsQueue).to(directExchange).with(componentsRoutingKey);
-    }
-    @Bean
-    public Queue defaultProductsQueue() {
-        return new Queue(defaultProductsQueueName);
+    public Binding productServiceBinding(DirectExchange directExchange, Queue productServiceQueue) {
+        return BindingBuilder.bind(productServiceQueue).to(directExchange).with(productServiceRoutingKey);
     }
 
-    @Bean
-    public Binding defaultProductsBinding(DirectExchange directExchange, Queue defaultProductsQueue) {
-        return BindingBuilder.bind(defaultProductsQueue).to(directExchange).with(defaultProductsRoutingKey);
-    }
-
-    @Bean
-    public Queue userProductsQueue() {
-        return new Queue(userProductsQueueName);
-    }
-
-    @Bean
-    public Binding userProductsBinding(DirectExchange directExchange, Queue userProductsQueue) {
-        return BindingBuilder.bind(userProductsQueue).to(directExchange).with(userProductsRoutingKey);
-    }
 
 }

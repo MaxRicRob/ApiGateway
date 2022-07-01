@@ -24,22 +24,17 @@ public class ProductService {
     @Autowired
     private DirectExchange directExchange;
 
-    @Value("${routing-keys.components}")
-    private String componentsRoutingKey;
+    @Value("${routing-keys.product-service}")
+    private String productServiceRoutingKey;
 
-    @Value("${routing-keys.default-products}")
-    private String defaultProductsRoutingKey;
-
-    @Value("${routing-keys.user-products}")
-    private String userProductsRoutingKey;
 
 
     public List<ProductComponent> getAllComponents() {
 
         var receivedMessage =  rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
-                componentsRoutingKey,
-                new Message("getProductComponent".getBytes())
+                productServiceRoutingKey,
+                new Message("getComponents-x".getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving productComponents from ProductService");
@@ -55,8 +50,8 @@ public class ProductService {
 
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
-                defaultProductsRoutingKey,
-                new Message("getDefaultProducts".getBytes())
+                productServiceRoutingKey,
+                new Message("getDefaultProducts-x".getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving defaultProducts from ProductService");
@@ -72,8 +67,8 @@ public class ProductService {
     public List<Product> getProductsFromUser(String userName) {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
-                userProductsRoutingKey,
-                new Message(userName.getBytes())
+                productServiceRoutingKey,
+                new Message(("getProductsFromUser-"+ userName).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving userProducts from ProductService");
