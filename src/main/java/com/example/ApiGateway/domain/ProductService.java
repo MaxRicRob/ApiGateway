@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -83,11 +82,11 @@ public class ProductService {
 
     }
 
-    public Product deleteProduct(UUID uuid) {
+    public Product deleteProduct(String id) {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("deleteProduct_"+ uuid).getBytes())
+                new Message(("deleteProduct_"+ id).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while deleting Product from ProductService");

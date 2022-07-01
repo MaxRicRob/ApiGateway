@@ -34,8 +34,7 @@ public class ApiService {
     }
 
     public Product deleteProduct(String id) {
-        var uuid = UUID.fromString(id);
-        return productService.deleteProduct(uuid);
+        return productService.deleteProduct(id);
     }
 
     public Product createProduct(Product product) {
