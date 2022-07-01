@@ -2,6 +2,7 @@ package com.example.ApiGateway.service;
 
 import com.example.ApiGateway.domain.CurrencyRequest;
 import com.example.ApiGateway.api.dto.CurrencyResponse;
+import com.example.ApiGateway.domain.CurrencyService;
 import com.example.ApiGateway.domain.DefaultProduct;
 import com.example.ApiGateway.domain.PriceRequest;
 import com.example.ApiGateway.api.dto.PriceResponse;
@@ -20,6 +21,7 @@ public class ApiService {
 
     final ProductService productService;
     final PriceService priceService;
+    final CurrencyService currencyService;
 
 
     public List<DefaultProduct> getDefaultProducts() {
@@ -51,7 +53,7 @@ public class ApiService {
     }
 
     public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
-        return null;
+        return currencyService.getCurrency(currencyRequest);
     }
 
 }
