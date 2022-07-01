@@ -1,6 +1,7 @@
 package com.example.ApiGateway.configuration;
 
 
+import com.example.ApiGateway.domain.PriceService;
 import com.example.ApiGateway.domain.ProductService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -22,10 +23,21 @@ public class RabbitConfiguration {
     @Value("${queue-names.product-service}")
     private String productServiceQueueName;
 
+    @Value("${routing-keys.price-service}")
+    private String priceServiceRoutingKey;
+
+    @Value("${queue-names.price-service}")
+    private String priceServiceQueueName;
+
 
     @Bean
     public ProductService productService() {
         return new ProductService();
+    }
+
+    @Bean
+    public PriceService priceService() {
+        return new PriceService();
     }
 
     @Bean
@@ -41,6 +53,16 @@ public class RabbitConfiguration {
     @Bean
     public Binding productServiceBinding(DirectExchange directExchange, Queue productServiceQueue) {
         return BindingBuilder.bind(productServiceQueue).to(directExchange).with(productServiceRoutingKey);
+    }
+
+    @Bean
+    public Queue priceServiceQueue() {
+        return new Queue(priceServiceQueueName);
+    }
+
+    @Bean
+    public Binding priceServiceBinding(DirectExchange directExchange, Queue priceServiceQueue) {
+        return BindingBuilder.bind(priceServiceQueue).to(directExchange).with(priceServiceRoutingKey);
     }
 
 
