@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -80,5 +81,13 @@ public class ProductService {
         );
 
 
+    }
+
+    public void deleteProduct(UUID uuid) {
+        rabbitTemplate.send(
+                directExchange.getName(),
+                productServiceRoutingKey,
+                new Message(("deleteProduct-"+ uuid).getBytes())
+        );
     }
 }
