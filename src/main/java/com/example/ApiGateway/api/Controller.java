@@ -4,13 +4,13 @@ package com.example.ApiGateway.api;
 import com.example.ApiGateway.api.dto.DefaultProductResponse;
 import com.example.ApiGateway.domain.CurrencyRequest;
 import com.example.ApiGateway.api.dto.CurrencyResponse;
-import com.example.ApiGateway.domain.DefaultProduct;
 import com.example.ApiGateway.domain.PriceRequest;
 import com.example.ApiGateway.api.dto.PriceResponse;
 import com.example.ApiGateway.domain.Product;
 import com.example.ApiGateway.api.dto.ProductComponentResponse;
 import com.example.ApiGateway.api.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.example.ApiGateway.service.ApiService;
 
@@ -51,28 +51,28 @@ public class Controller {
 
     @DeleteMapping("/products/{id}")
     @ResponseStatus(NO_CONTENT)
-    public void deleteProduct(@PathVariable final String id) {
-        apiService.deleteProduct(id);
+    public ProductResponse deleteProduct(@PathVariable final String id) {
+        return ProductResponse.from(apiService.deleteProduct(id));
     }
 
-    @PostMapping("/products")
+    @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
-    public void createProduct(@RequestBody final Product product) {
-        apiService.createProduct(product);
+    public ProductResponse createProduct(@RequestBody final Product product) {
+        return ProductResponse.from(apiService.createProduct(product));
     }
 
-    @PutMapping("/products")
+    @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
-    public void updateProduct(@RequestBody final Product product) {
-        apiService.updateProduct(product);
+    public ProductResponse updateProduct(@RequestBody final Product product) {
+        return ProductResponse.from(apiService.updateProduct(product));
     }
 
-    @GetMapping("/priceRequest")
+    @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     public PriceResponse getPrice(@RequestBody final PriceRequest priceRequest) {
         return apiService.getPrice(priceRequest);
     }
 
-    @GetMapping("/currencyRequest")
+    @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CurrencyResponse getCurrency(@RequestBody final CurrencyRequest currencyRequest) {
         return apiService.getCurrency(currencyRequest);
     }

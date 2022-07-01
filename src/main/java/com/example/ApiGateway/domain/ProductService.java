@@ -35,7 +35,7 @@ public class ProductService {
         var receivedMessage =  rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message("getComponents-x".getBytes())
+                new Message("getComponents_x".getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving productComponents from ProductService");
@@ -52,7 +52,7 @@ public class ProductService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message("getDefaultProducts-x".getBytes())
+                new Message("getDefaultProducts_x".getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving defaultProducts from ProductService");
@@ -69,10 +69,10 @@ public class ProductService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("getProductsFromUser-"+ userName).getBytes())
+                new Message(("getProductsFromUser_"+ userName).getBytes())
         );
         if (receivedMessage == null) {
-            log.error("error while receiving userProducts from ProductService");
+            log.error("error while receiving Products from ProductService");
             return Collections.emptyList();
         }
         return new Gson().fromJson(
@@ -83,29 +83,51 @@ public class ProductService {
 
     }
 
-    public void deleteProduct(UUID uuid) {
-        rabbitTemplate.send(
+    public Product deleteProduct(UUID uuid) {
+        var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("deleteProduct-"+ uuid).getBytes())
+                new Message(("deleteProduct_"+ uuid).getBytes())
+        );
+        if (receivedMessage == null) {
+            log.error("error while deleting Product from ProductService");
+            return new Product();
+        }
+        return new Gson().fromJson(
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
+                Product.class
         );
     }
 
-    public void createProduct(Product product) {
-        rabbitTemplate.send(
+    public Product createProduct(Product product) {
+        var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("createProduct-"+ new Gson().toJson(product)).getBytes())
+                new Message(("createProduct_"+ new Gson().toJson(product)).getBytes())
+        );
+        if (receivedMessage == null) {
+            log.error("error while creating Product from ProductService");
+            return new Product();
+        }
+        return new Gson().fromJson(
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
+                Product.class
         );
     }
 
-    public void updateProduct(Product product) {
-        rabbitTemplate.send(
+    public Product updateProduct(Product product) {
+        var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("updateProduct-"+ new Gson().toJson(product)).getBytes())
+                new Message(("updateProduct_"+ new Gson().toJson(product)).getBytes())
         );
-
-
+        if (receivedMessage == null) {
+            log.error("error while updating Product from ProductService");
+            return new Product();
+        }
+        return new Gson().fromJson(
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
+                Product.class
+        );
     }
 }

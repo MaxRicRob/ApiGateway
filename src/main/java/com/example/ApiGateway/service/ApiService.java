@@ -33,17 +33,17 @@ public class ApiService {
         return productService.getProductsFromUser(userName);
     }
 
-    public void deleteProduct(String id) {
+    public Product deleteProduct(String id) {
         var uuid = UUID.fromString(id);
-        productService.deleteProduct(uuid);
+        return productService.deleteProduct(uuid);
     }
 
-    public void createProduct(Product product) {
-        productService.createProduct(product);
+    public Product createProduct(Product product) {
+        return productService.createProduct(product);
     }
 
-    public void updateProduct(Product product) {
-        productService.updateProduct(product);
+    public Product updateProduct(Product product) {
+        return productService.updateProduct(product);
     }
 
     public PriceResponse getPrice(PriceRequest priceRequest) {
