@@ -5,9 +5,11 @@ server:
 #rabbitMQ
 queue-names:
   product-service: product-service.rpc.queue
+  price-service: price-service.rpc.queue
 
 routing-keys:
   product-service: product-service.rpc.key
+  price-service: price-service.rpc.key
 
 xchange:
   name: exchange.rpc

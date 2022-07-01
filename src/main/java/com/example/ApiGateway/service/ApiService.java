@@ -5,6 +5,7 @@ import com.example.ApiGateway.api.dto.CurrencyResponse;
 import com.example.ApiGateway.domain.DefaultProduct;
 import com.example.ApiGateway.domain.PriceRequest;
 import com.example.ApiGateway.api.dto.PriceResponse;
+import com.example.ApiGateway.domain.PriceService;
 import com.example.ApiGateway.domain.Product;
 import com.example.ApiGateway.domain.ProductComponent;
 import com.example.ApiGateway.domain.ProductService;
@@ -12,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ApiService {
 
     final ProductService productService;
+    final PriceService priceService;
 
 
     public List<DefaultProduct> getDefaultProducts() {
@@ -46,7 +47,7 @@ public class ApiService {
     }
 
     public PriceResponse getPrice(PriceRequest priceRequest) {
-        return null;
+        return priceService.getPrice(priceRequest);
     }
 
     public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
