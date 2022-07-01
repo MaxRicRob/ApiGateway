@@ -7,7 +7,6 @@ import com.example.ApiGateway.domain.PriceRequest;
 import com.example.ApiGateway.api.dto.PriceResponse;
 import com.example.ApiGateway.domain.Product;
 import com.example.ApiGateway.domain.ProductComponent;
-import com.example.ApiGateway.api.dto.ProductResponse;
 import com.example.ApiGateway.domain.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,12 +38,11 @@ public class ApiService {
         productService.deleteProduct(uuid);
     }
 
-    public ProductResponse createProduct(Product product) {
-        return null;
+    public void createProduct(Product product) {
+        productService.createProduct(product);
     }
 
-    public ProductResponse updateProduct(Product product) {
-        return null;
+    public void updateProduct(Product product) {
     }
 
     public PriceResponse getPrice(PriceRequest priceRequest) {

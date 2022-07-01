@@ -90,4 +90,12 @@ public class ProductService {
                 new Message(("deleteProduct-"+ uuid).getBytes())
         );
     }
+
+    public void createProduct(Product product) {
+        rabbitTemplate.send(
+                directExchange.getName(),
+                productServiceRoutingKey,
+                new Message(("createProduct-"+ new Gson().toJson(product)).getBytes())
+        );
+    }
 }

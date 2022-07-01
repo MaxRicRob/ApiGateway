@@ -57,14 +57,14 @@ public class Controller {
 
     @PostMapping("/products")
     @ResponseStatus(CREATED)
-    public ProductResponse createProduct(@RequestBody final Product product) {
-        return apiService.createProduct(product);
+    public void createProduct(@RequestBody final Product product) {
+        apiService.createProduct(product);
     }
 
     @PutMapping("/products")
     @ResponseStatus(CREATED)
-    public ProductResponse updateProduct(@RequestBody final Product product) {
-        return apiService.updateProduct(product);
+    public void updateProduct(@RequestBody final Product product) {
+        apiService.updateProduct(product);
     }
 
     @GetMapping("/priceRequest")
