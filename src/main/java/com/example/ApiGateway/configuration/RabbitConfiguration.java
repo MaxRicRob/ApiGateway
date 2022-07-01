@@ -1,7 +1,7 @@
 package com.example.ApiGateway.configuration;
 
 
-import com.example.ApiGateway.service.ProductService;
+import com.example.ApiGateway.domain.ProductService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -27,6 +27,12 @@ public class RabbitConfiguration {
 
     @Value("${queue-names.default-products}")
     private String defaultProductsQueueName;
+
+    @Value("${routing-keys.user-products}")
+    private String userProductsRoutingKey;
+
+    @Value("${queue-names.user-products}")
+    private String userProductsQueueName;
 
     @Bean
     public ProductService productService() {
@@ -55,6 +61,16 @@ public class RabbitConfiguration {
     @Bean
     public Binding defaultProductsBinding(DirectExchange directExchange, Queue defaultProductsQueue) {
         return BindingBuilder.bind(defaultProductsQueue).to(directExchange).with(defaultProductsRoutingKey);
+    }
+
+    @Bean
+    public Queue userProductsQueue() {
+        return new Queue(userProductsQueueName);
+    }
+
+    @Bean
+    public Binding userProductsBinding(DirectExchange directExchange, Queue userProductsQueue) {
+        return BindingBuilder.bind(userProductsQueue).to(directExchange).with(userProductsRoutingKey);
     }
 
 }

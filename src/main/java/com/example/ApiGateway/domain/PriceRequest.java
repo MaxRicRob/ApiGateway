@@ -1,22 +1,21 @@
-package com.example.ApiGateway.api.dto;
+package com.example.ApiGateway.domain;
 
-
+import com.example.ApiGateway.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
-public class CurrencyRequest {
+public class PriceRequest {
 
-    private int id;
-    private long totalPrice;
-    private Currency wantedCurrency;
-
+    private long id;
+    private Product product;
 
 }

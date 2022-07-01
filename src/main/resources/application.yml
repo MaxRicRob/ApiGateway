@@ -6,10 +6,12 @@ server:
 queue-names:
   components: components.rpc.queue
   default-products: default-products.rpc.queue
+  user-products: user-products.rpc.queue
 
 routing-keys:
   components: components.rpc.key
   default-products: default-products.rpc.key
+  user-products: user-products.rpc.key
 
 xchange:
   name: exchange.rpc

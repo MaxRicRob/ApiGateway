@@ -1,8 +1,6 @@
-package com.example.ApiGateway.service;
+package com.example.ApiGateway.domain;
 
 
-import com.example.ApiGateway.api.dto.DefaultProduct;
-import com.example.ApiGateway.api.dto.ProductComponent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +29,9 @@ public class ProductService {
 
     @Value("${routing-keys.default-products}")
     private String defaultProductsRoutingKey;
+
+    @Value("${routing-keys.user-products}")
+    private String userProductsRoutingKey;
 
 
     public List<ProductComponent> getAllComponents() {
@@ -68,4 +69,21 @@ public class ProductService {
     }
 
 
+    public List<Product> getProductsFromUser(String userName) {
+        var receivedMessage = rabbitTemplate.sendAndReceive(
+                directExchange.getName(),
+                userProductsRoutingKey,
+                new Message(userName.getBytes())
+        );
+        if (receivedMessage == null) {
+            log.error("error while receiving userProducts from ProductService");
+            return Collections.emptyList();
+        }
+        return new Gson().fromJson(
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
+                new TypeToken<List<Product>>(){}.getType()
+        );
+
+
+    }
 }

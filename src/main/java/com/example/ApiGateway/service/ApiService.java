@@ -1,13 +1,14 @@
 package com.example.ApiGateway.service;
 
-import com.example.ApiGateway.api.dto.CurrencyRequest;
+import com.example.ApiGateway.domain.CurrencyRequest;
 import com.example.ApiGateway.api.dto.CurrencyResponse;
-import com.example.ApiGateway.api.dto.DefaultProduct;
-import com.example.ApiGateway.api.dto.PriceRequest;
+import com.example.ApiGateway.domain.DefaultProduct;
+import com.example.ApiGateway.domain.PriceRequest;
 import com.example.ApiGateway.api.dto.PriceResponse;
-import com.example.ApiGateway.api.dto.Product;
-import com.example.ApiGateway.api.dto.ProductComponent;
+import com.example.ApiGateway.domain.Product;
+import com.example.ApiGateway.domain.ProductComponent;
 import com.example.ApiGateway.api.dto.ProductResponse;
+import com.example.ApiGateway.domain.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,6 @@ public class ApiService {
     final ProductService productService;
 
 
-    public void delete(String id) {
-        UUID uuid = UUID.fromString(id);
-    }
-
     public List<DefaultProduct> getDefaultProducts() {
         return productService.getDefaultProducts();
     }
@@ -34,7 +31,11 @@ public class ApiService {
     }
 
     public List<Product> getProductsFromUser(String userName) {
-        return null;
+        return productService.getProductsFromUser(userName);
+    }
+
+    public void deleteProduct(String id) {
+        UUID uuid = UUID.fromString(id);
     }
 
     public ProductResponse createProduct(Product product) {
