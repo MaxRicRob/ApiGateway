@@ -1,53 +1,61 @@
 package com.example.ApiGateway.service;
 
-import com.example.ApiGateway.api.dto.CurrencyRequest;
+import com.example.ApiGateway.domain.CurrencyRequest;
 import com.example.ApiGateway.api.dto.CurrencyResponse;
-import com.example.ApiGateway.api.dto.DefaultProduct;
-import com.example.ApiGateway.api.dto.PriceRequest;
+import com.example.ApiGateway.domain.CurrencyService;
+import com.example.ApiGateway.domain.DefaultProduct;
+import com.example.ApiGateway.domain.PriceRequest;
 import com.example.ApiGateway.api.dto.PriceResponse;
-import com.example.ApiGateway.api.dto.Product;
-import com.example.ApiGateway.api.dto.ProductComponent;
-import com.example.ApiGateway.api.dto.ProductResponse;
+import com.example.ApiGateway.domain.PriceService;
+import com.example.ApiGateway.domain.Product;
+import com.example.ApiGateway.domain.ProductComponent;
+import com.example.ApiGateway.domain.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ApiService {
 
+    final ProductService productService;
+    final PriceService priceService;
+    final CurrencyService currencyService;
 
-    public void delete(String id) {
-        UUID uuid = UUID.fromString(id);
-    }
 
     public List<DefaultProduct> getDefaultProducts() {
-        return null;
+        return productService.getDefaultProducts();
     }
 
     public List<ProductComponent> getProductComponents() {
-        return null;
+        return productService.getAllComponents();
     }
 
     public List<Product> getProductsFromUser(String userName) {
-        return null;
+        return productService.getProductsFromUser(userName);
     }
 
-    public ProductResponse createProduct(Product product) {
-        return null;
+    public Product deleteProduct(String id) {
+        return productService.deleteProduct(id);
     }
 
-    public ProductResponse updateProduct(Product product) {
-        return null;
+    public Product createProduct(Product product) {
+        return productService.createProduct(product);
+    }
+
+    public Product updateProduct(Product product) {
+        return productService.updateProduct(product);
     }
 
     public PriceResponse getPrice(PriceRequest priceRequest) {
-        return null;
+        return priceService.getPrice(priceRequest);
     }
 
     public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
-        return null;
+        return currencyService.getCurrency(currencyRequest);
     }
+
 }
 
 
