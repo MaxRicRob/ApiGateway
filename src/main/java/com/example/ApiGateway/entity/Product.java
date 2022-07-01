@@ -1,6 +1,5 @@
-package com.example.ApiGateway.domain;
+package com.example.ApiGateway.entity;
 
-import com.example.ApiGateway.api.dto.ProductResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,9 @@
 package com.example.ApiGateway.domain;
 
 
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +31,9 @@ public class ProductService {
     private String productServiceRoutingKey;
 
 
-
     public List<ProductComponent> getAllComponents() {
 
-        var receivedMessage =  rabbitTemplate.sendAndReceive(
+        var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
                 new Message("getComponents_x".getBytes())
@@ -42,7 +44,8 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<ProductComponent>>(){}.getType()
+                new TypeToken<List<ProductComponent>>() {
+                }.getType()
         );
     }
 
@@ -59,7 +62,8 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<DefaultProduct>>(){}.getType()
+                new TypeToken<List<DefaultProduct>>() {
+                }.getType()
         );
     }
 
@@ -68,7 +72,7 @@ public class ProductService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("getProductsFromUser_"+ userName).getBytes())
+                new Message(("getProductsFromUser_" + userName).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while receiving Products from ProductService");
@@ -76,7 +80,8 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<Product>>(){}.getType()
+                new TypeToken<List<Product>>() {
+                }.getType()
         );
 
 
@@ -86,7 +91,7 @@ public class ProductService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("deleteProduct_"+ id).getBytes())
+                new Message(("deleteProduct_" + id).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while deleting Product from ProductService");
@@ -102,7 +107,7 @@ public class ProductService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("createProduct_"+ new Gson().toJson(product)).getBytes())
+                new Message(("createProduct_" + new Gson().toJson(product)).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while creating Product from ProductService");
@@ -118,7 +123,7 @@ public class ProductService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("updateProduct_"+ new Gson().toJson(product)).getBytes())
+                new Message(("updateProduct_" + new Gson().toJson(product)).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while updating Product from ProductService");

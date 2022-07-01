@@ -1,4 +1,4 @@
-package com.example.ApiGateway.api.dto;
+package com.example.ApiGateway.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,18 +1,18 @@
 package com.example.ApiGateway.api;
 
 
-import com.example.ApiGateway.api.dto.DefaultProductResponse;
-import com.example.ApiGateway.domain.CurrencyRequest;
-import com.example.ApiGateway.api.dto.CurrencyResponse;
-import com.example.ApiGateway.domain.PriceRequest;
-import com.example.ApiGateway.api.dto.PriceResponse;
-import com.example.ApiGateway.domain.Product;
-import com.example.ApiGateway.api.dto.ProductComponentResponse;
-import com.example.ApiGateway.api.dto.ProductResponse;
+import com.example.ApiGateway.entity.DefaultProductResponse;
+import com.example.ApiGateway.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.CurrencyResponse;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponentResponse;
+import com.example.ApiGateway.entity.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import com.example.ApiGateway.service.ApiService;
+import com.example.ApiGateway.domain.ApiService;
 
 import java.util.List;
 import java.util.stream.Collectors;

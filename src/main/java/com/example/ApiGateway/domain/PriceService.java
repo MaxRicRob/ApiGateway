@@ -1,6 +1,7 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.api.dto.PriceResponse;
+import com.example.ApiGateway.entity.PriceResponse;
+import com.example.ApiGateway.entity.PriceRequest;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class PriceService {
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 priceServiceRoutingKey,
-                new Message(("priceRequest_"+ new Gson().toJson(priceRequest)).getBytes())
+                new Message(("priceRequest_" + new Gson().toJson(priceRequest)).getBytes())
         );
         if (receivedMessage == null) {
             log.error("error while getting Price from PriceService");

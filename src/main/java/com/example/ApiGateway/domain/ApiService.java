@@ -1,15 +1,12 @@
-package com.example.ApiGateway.service;
+package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.CurrencyRequest;
-import com.example.ApiGateway.api.dto.CurrencyResponse;
-import com.example.ApiGateway.domain.CurrencyService;
-import com.example.ApiGateway.domain.DefaultProduct;
-import com.example.ApiGateway.domain.PriceRequest;
-import com.example.ApiGateway.api.dto.PriceResponse;
-import com.example.ApiGateway.domain.PriceService;
-import com.example.ApiGateway.domain.Product;
-import com.example.ApiGateway.domain.ProductComponent;
-import com.example.ApiGateway.domain.ProductService;
+import com.example.ApiGateway.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.CurrencyResponse;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
