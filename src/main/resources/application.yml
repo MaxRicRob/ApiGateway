@@ -1,6 +1,10 @@
 server:
   port: 8085
 
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
 
 #rabbitMQ
 queue-names:
