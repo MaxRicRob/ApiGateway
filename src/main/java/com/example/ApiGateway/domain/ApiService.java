@@ -16,10 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiService {
 
-    final ProductService productService;
-    final PriceService priceService;
-    final CurrencyService currencyService;
-
+    private final ProductService productService;
+    private final PriceService priceService;
+    private final CurrencyService currencyService;
 
     public List<DefaultProduct> getDefaultProducts() {
         return productService.getDefaultProducts();
