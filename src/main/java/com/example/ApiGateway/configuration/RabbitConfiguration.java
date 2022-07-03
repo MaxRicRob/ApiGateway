@@ -21,21 +21,25 @@ public class RabbitConfiguration {
     @Value("${routing-keys.product-service}")
     private String productServiceRoutingKey;
 
-    @Value("${queue-names.product-service}")
-    private String productServiceQueueName;
-
     @Value("${routing-keys.price-service}")
     private String priceServiceRoutingKey;
-
-    @Value("${queue-names.price-service}")
-    private String priceServiceQueueName;
 
     @Value("${routing-keys.currency-service}")
     private String currencyServiceRoutingKey;
 
+    @Value("${queue-names.product-service}")
+    private String productServiceQueueName;
+
+    @Value("${queue-names.price-service}")
+    private String priceServiceQueueName;
+
     @Value("${queue-names.currency-service}")
     private String currencyServiceQueueName;
 
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange(directXchangeName);
+    }
 
     @Bean
     public ProductService productService() {
@@ -52,20 +56,9 @@ public class RabbitConfiguration {
         return new CurrencyService();
     }
 
-
-    @Bean
-    public DirectExchange directExchange() {
-        return new DirectExchange(directXchangeName);
-    }
-
     @Bean
     public Queue productServiceQueue() {
         return new Queue(productServiceQueueName);
-    }
-
-    @Bean
-    public Binding productServiceBinding(DirectExchange directExchange, Queue productServiceQueue) {
-        return BindingBuilder.bind(productServiceQueue).to(directExchange).with(productServiceRoutingKey);
     }
 
     @Bean
@@ -74,19 +67,23 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public Binding priceServiceBinding(DirectExchange directExchange, Queue priceServiceQueue) {
-        return BindingBuilder.bind(priceServiceQueue).to(directExchange).with(priceServiceRoutingKey);
+    public Queue currencyServiceQueue() {
+        return new Queue(currencyServiceQueueName);
     }
 
     @Bean
-    public Queue currencyServiceQueue() {
-        return new Queue(currencyServiceQueueName);
+    public Binding productServiceBinding(DirectExchange directExchange, Queue productServiceQueue) {
+        return BindingBuilder.bind(productServiceQueue).to(directExchange).with(productServiceRoutingKey);
+    }
+
+    @Bean
+    public Binding priceServiceBinding(DirectExchange directExchange, Queue priceServiceQueue) {
+        return BindingBuilder.bind(priceServiceQueue).to(directExchange).with(priceServiceRoutingKey);
     }
 
     @Bean
     public Binding currencyServiceBinding(DirectExchange directExchange, Queue currencyServiceQueue) {
         return BindingBuilder.bind(currencyServiceQueue).to(directExchange).with(currencyServiceRoutingKey);
     }
-
 
 }
