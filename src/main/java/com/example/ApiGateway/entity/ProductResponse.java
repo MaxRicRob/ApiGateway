@@ -31,5 +31,4 @@ public class ProductResponse {
                 .setUserName(product.getUserName())
                 .setComponents(product.getComponents());
     }
-
 }

@@ -18,5 +18,4 @@ public class CurrencyRequest {
     private long totalPrice;
     private Currency wantedCurrency;
 
-
 }

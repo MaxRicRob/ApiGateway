@@ -18,5 +18,4 @@ public class CurrencyResponse {
     private long updatedPrice;
     private Currency updatedCurrency;
 
-
 }

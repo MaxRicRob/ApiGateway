@@ -8,5 +8,4 @@ public enum Currency {
     CAD,
     YEN,
     POUND
-
 }

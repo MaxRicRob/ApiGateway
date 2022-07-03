@@ -21,7 +21,6 @@ public class PriceService {
     private RabbitTemplate rabbitTemplate;
     @Autowired
     private DirectExchange directExchange;
-
     @Value("${routing-keys.price-service}")
     private String priceServiceRoutingKey;
 

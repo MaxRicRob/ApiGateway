@@ -26,10 +26,8 @@ public class ProductService {
     private RabbitTemplate rabbitTemplate;
     @Autowired
     private DirectExchange directExchange;
-
     @Value("${routing-keys.product-service}")
     private String productServiceRoutingKey;
-
 
     public List<ProductComponent> getAllComponents() {
 
@@ -83,8 +81,6 @@ public class ProductService {
                 new TypeToken<List<Product>>() {
                 }.getType()
         );
-
-
     }
 
     public Product deleteProduct(String id) {
