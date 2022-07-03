@@ -9,6 +9,8 @@ import com.example.ApiGateway.entity.PriceResponse;
 import com.example.ApiGateway.entity.Product;
 import com.example.ApiGateway.entity.ProductComponentResponse;
 import com.example.ApiGateway.entity.ProductResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ public class Controller {
 
     @GetMapping("/defaultProducts")
     @ResponseStatus(OK)
+    @Operation(summary = "Get all Default Products from Warehouse.")
     public List<DefaultProductResponse> getDefaultProducts() {
         return apiService.getDefaultProducts().stream()
                 .map(DefaultProductResponse::from)
@@ -35,6 +38,7 @@ public class Controller {
 
     @GetMapping("/productComponents")
     @ResponseStatus(OK)
+    @Operation(summary = "Get all Default Product Components from Warehouse.")
     public List<ProductComponentResponse> getProductComponents() {
         return apiService.getProductComponents().stream()
                 .map(ProductComponentResponse::from)
@@ -43,7 +47,10 @@ public class Controller {
 
     @GetMapping("/products/{userName}")
     @ResponseStatus(OK)
-    public List<ProductResponse> getProductsFromUser(@PathVariable final String userName) {
+    @Operation(summary = "Get all Products from user by username.")
+    public List<ProductResponse> getProductsFromUser(
+            @Parameter(description = "Name of the user")
+            @PathVariable final String userName) {
         return apiService.getProductsFromUser(userName).stream()
                 .map(ProductResponse::from)
                 .collect(Collectors.toList());
@@ -51,29 +58,43 @@ public class Controller {
 
     @DeleteMapping("/products/{id}")
     @ResponseStatus(NO_CONTENT)
-    public ProductResponse deleteProduct(@PathVariable final String id) {
+    @Operation(summary = "Delete a product by its id.")
+    public ProductResponse deleteProduct(
+            @Parameter(description = "UUID of the product")
+            @PathVariable final String id) {
         return ProductResponse.from(apiService.deleteProduct(id));
     }
 
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
-    public ProductResponse createProduct(@RequestBody final Product product) {
+    @Operation(summary = "Create a product.")
+    public ProductResponse createProduct(
+            @Parameter(description = "Product that needs to be created")
+            @RequestBody final Product product) {
         return ProductResponse.from(apiService.createProduct(product));
     }
 
     @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
-    public ProductResponse updateProduct(@RequestBody final Product product) {
+    @Operation(summary = "Update a product.")
+    public ProductResponse updateProduct(
+            @Parameter(description = "Updated Product")
+            @RequestBody final Product product) {
         return ProductResponse.from(apiService.updateProduct(product));
     }
 
     @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public PriceResponse getPrice(@RequestBody final PriceRequest priceRequest) {
+    @Operation(summary = "Get the price for a product.")
+    public PriceResponse getPrice(
+            @RequestBody final PriceRequest priceRequest) {
         return apiService.getPrice(priceRequest);
     }
 
     @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CurrencyResponse getCurrency(@RequestBody final CurrencyRequest currencyRequest) {
+    @Operation(summary = "Get the price for a product in a specific currency of your choice")
+    public CurrencyResponse getCurrency(
+            @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
+            @RequestBody final CurrencyRequest currencyRequest) {
         return apiService.getCurrency(currencyRequest);
     }
 
