@@ -36,8 +36,8 @@ public class ProductService {
                 productServiceRoutingKey,
                 new Message("getComponents_x".getBytes())
         );
-        if (receivedMessage == null) {
-            log.error("error while receiving productComponents from ProductService");
+        if (receivedMessageIsEmpty(receivedMessage)) {
+            trackErrorFor("receiving productComponents");
             return Collections.emptyList();
         }
         return new Gson().fromJson(
@@ -54,8 +54,8 @@ public class ProductService {
                 productServiceRoutingKey,
                 new Message("getDefaultProducts_x".getBytes())
         );
-        if (receivedMessage == null) {
-            log.error("error while receiving defaultProducts from ProductService");
+        if (receivedMessageIsEmpty(receivedMessage)) {
+            trackErrorFor("receiving defaultProducts");
             return Collections.emptyList();
         }
         return new Gson().fromJson(
@@ -72,8 +72,8 @@ public class ProductService {
                 productServiceRoutingKey,
                 new Message(("getProductsFromUser_" + userName).getBytes())
         );
-        if (receivedMessage == null) {
-            log.error("error while receiving Products from ProductService");
+        if (receivedMessageIsEmpty(receivedMessage)) {
+            trackErrorFor("receiving Products");
             return Collections.emptyList();
         }
         return new Gson().fromJson(
@@ -89,8 +89,8 @@ public class ProductService {
                 productServiceRoutingKey,
                 new Message(("deleteProduct_" + id).getBytes())
         );
-        if (receivedMessage == null) {
-            log.error("error while deleting Product from ProductService");
+        if (receivedMessageIsEmpty(receivedMessage)) {
+            trackErrorFor("deleting Product");
             return new Product();
         }
         return new Gson().fromJson(
@@ -105,8 +105,8 @@ public class ProductService {
                 productServiceRoutingKey,
                 new Message(("createProduct_" + new Gson().toJson(product)).getBytes())
         );
-        if (receivedMessage == null) {
-            log.error("error while creating Product from ProductService");
+        if (receivedMessageIsEmpty(receivedMessage)) {
+            trackErrorFor("creating Product");
             return new Product();
         }
         return new Gson().fromJson(
@@ -121,13 +121,21 @@ public class ProductService {
                 productServiceRoutingKey,
                 new Message(("updateProduct_" + new Gson().toJson(product)).getBytes())
         );
-        if (receivedMessage == null) {
-            log.error("error while updating Product from ProductService");
+        if (receivedMessageIsEmpty(receivedMessage)) {
+            trackErrorFor("updating Product");
             return new Product();
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
                 Product.class
         );
+    }
+
+    private boolean receivedMessageIsEmpty(Message receivedMessage) {
+        return receivedMessage == null;
+    }
+
+    private void trackErrorFor(String taskName) {
+        log.error("error while '{}', because received Message from Product Service via rabbitmq is empty", taskName);
     }
 }

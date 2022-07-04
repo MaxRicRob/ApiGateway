@@ -31,7 +31,7 @@ public class PriceService {
                 new Message(("priceRequest_" + new Gson().toJson(priceRequest)).getBytes())
         );
         if (receivedMessage == null) {
-            log.error("error while getting Price from PriceService");
+            log.error("error while receiving PriceResponse, because received Message from Price Service via rabbitmq is empty");
             return new PriceResponse();
         }
         return new Gson().fromJson(

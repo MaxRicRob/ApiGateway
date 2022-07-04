@@ -32,7 +32,7 @@ public class CurrencyService {
                 new Message(("currencyRequest_" + new Gson().toJson(currencyRequest)).getBytes())
         );
         if (receivedMessage == null) {
-            log.error("error while getting Price from PriceService");
+            log.error("error while receiving CurrencyResponse, because received Message from Currency Service via rabbitmq is empty");
             return new CurrencyResponse();
         }
         return new Gson().fromJson(
