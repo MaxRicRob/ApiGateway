@@ -2,7 +2,7 @@ version: "3.9"
 services:
   app:
     container_name: ApiGatewayApplication
-    restart: on-failure
+    restart: unless-stopped
     command: java -jar target/ApiGatewayApplication-0.0.1-SNAPSHOT.jar
     build:
       context: .
