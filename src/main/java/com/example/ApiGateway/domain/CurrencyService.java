@@ -26,10 +26,13 @@ public class CurrencyService {
     private String currencyServiceRoutingKey;
 
     public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
+        var message = new Message((new Gson().toJson(currencyRequest)).getBytes());
+        message.getMessageProperties()
+                .setHeader("key", "currencyRequest");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 currencyServiceRoutingKey,
-                new Message(("currencyRequest_" + new Gson().toJson(currencyRequest)).getBytes())
+                message
         );
         if (receivedMessage == null) {
             log.error("error while receiving CurrencyResponse, because received Message from Currency Service via rabbitmq is empty");

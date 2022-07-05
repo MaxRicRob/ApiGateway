@@ -31,10 +31,12 @@ public class ProductService {
 
     public List<ProductComponent> getAllComponents() {
 
+        var message = new Message("".getBytes());
+        setMessageHeader(message, "getComponents");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message("getComponents_x".getBytes())
+                message
         );
         if (receivedMessageIsEmpty(receivedMessage)) {
             trackErrorFor("receiving productComponents");
@@ -49,10 +51,12 @@ public class ProductService {
 
     public List<DefaultProduct> getDefaultProducts() {
 
+        var message =  new Message("".getBytes());
+        setMessageHeader(message, "getDefaultProducts");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message("getDefaultProducts_x".getBytes())
+                message
         );
         if (receivedMessageIsEmpty(receivedMessage)) {
             trackErrorFor("receiving defaultProducts");
@@ -67,10 +71,13 @@ public class ProductService {
 
 
     public List<Product> getProductsFromUser(String userName) {
+
+        var message = new Message(userName.getBytes());
+        setMessageHeader(message, "getProductsFromUser");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("getProductsFromUser_" + userName).getBytes())
+                message
         );
         if (receivedMessageIsEmpty(receivedMessage)) {
             trackErrorFor("receiving Products");
@@ -84,10 +91,13 @@ public class ProductService {
     }
 
     public Product deleteProduct(String id) {
+
+        var message = new Message(id.getBytes());
+        setMessageHeader(message,"deleteProduct" );
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("deleteProduct_" + id).getBytes())
+                message
         );
         if (receivedMessageIsEmpty(receivedMessage)) {
             trackErrorFor("deleting Product");
@@ -100,10 +110,13 @@ public class ProductService {
     }
 
     public Product createProduct(Product product) {
+
+        var message = new Message(new Gson().toJson(product).getBytes());
+        setMessageHeader(message,"createProduct");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("createProduct_" + new Gson().toJson(product)).getBytes())
+                message
         );
         if (receivedMessageIsEmpty(receivedMessage)) {
             trackErrorFor("creating Product");
@@ -116,10 +129,12 @@ public class ProductService {
     }
 
     public Product updateProduct(Product product) {
+        var message = new Message(new Gson().toJson(product).getBytes());
+        setMessageHeader(message,"updateProduct");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
-                new Message(("updateProduct_" + new Gson().toJson(product)).getBytes())
+                message
         );
         if (receivedMessageIsEmpty(receivedMessage)) {
             trackErrorFor("updating Product");
@@ -129,6 +144,11 @@ public class ProductService {
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
                 Product.class
         );
+    }
+
+    private void setMessageHeader(Message message, String value) {
+        message.getMessageProperties()
+                .setHeader("key", value);
     }
 
     private boolean receivedMessageIsEmpty(Message receivedMessage) {

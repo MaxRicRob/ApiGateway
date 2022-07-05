@@ -25,10 +25,13 @@ public class PriceService {
     private String priceServiceRoutingKey;
 
     public PriceResponse getPrice(PriceRequest priceRequest) {
+        var message = new Message((new Gson().toJson(priceRequest)).getBytes());
+        message.getMessageProperties()
+                .setHeader("key", "priceRequest");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 priceServiceRoutingKey,
-                new Message(("priceRequest_" + new Gson().toJson(priceRequest)).getBytes())
+                message
         );
         if (receivedMessage == null) {
             log.error("error while receiving PriceResponse, because received Message from Price Service via rabbitmq is empty");
