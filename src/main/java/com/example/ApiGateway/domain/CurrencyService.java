@@ -28,7 +28,7 @@ public class CurrencyService {
     public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
         var message = new Message((new Gson().toJson(currencyRequest)).getBytes());
         message.getMessageProperties()
-                .setHeader("key", "currencyRequest");
+                .setType("currencyRequest");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 currencyServiceRoutingKey,

@@ -32,7 +32,7 @@ public class ProductService {
     public List<ProductComponent> getAllComponents() {
 
         var message = new Message("".getBytes());
-        setMessageHeader(message, "getComponents");
+        setMessageType(message, "getComponents");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -52,7 +52,7 @@ public class ProductService {
     public List<DefaultProduct> getDefaultProducts() {
 
         var message =  new Message("".getBytes());
-        setMessageHeader(message, "getDefaultProducts");
+        setMessageType(message, "getDefaultProducts");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -73,7 +73,7 @@ public class ProductService {
     public List<Product> getProductsFromUser(String userName) {
 
         var message = new Message(userName.getBytes());
-        setMessageHeader(message, "getProductsFromUser");
+        setMessageType(message, "getProductsFromUser");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -93,7 +93,7 @@ public class ProductService {
     public Product deleteProduct(String id) {
 
         var message = new Message(id.getBytes());
-        setMessageHeader(message,"deleteProduct" );
+        setMessageType(message,"deleteProduct" );
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -112,7 +112,7 @@ public class ProductService {
     public Product createProduct(Product product) {
 
         var message = new Message(new Gson().toJson(product).getBytes());
-        setMessageHeader(message,"createProduct");
+        setMessageType(message,"createProduct");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -130,7 +130,7 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
         var message = new Message(new Gson().toJson(product).getBytes());
-        setMessageHeader(message,"updateProduct");
+        setMessageType(message,"updateProduct");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -146,9 +146,9 @@ public class ProductService {
         );
     }
 
-    private void setMessageHeader(Message message, String value) {
+    private void setMessageType(Message message, String type) {
         message.getMessageProperties()
-                .setHeader("key", value);
+                .setType(type);
     }
 
     private boolean receivedMessageIsEmpty(Message receivedMessage) {

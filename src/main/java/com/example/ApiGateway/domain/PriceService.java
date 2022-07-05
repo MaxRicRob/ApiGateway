@@ -27,7 +27,7 @@ public class PriceService {
     public PriceResponse getPrice(PriceRequest priceRequest) {
         var message = new Message((new Gson().toJson(priceRequest)).getBytes());
         message.getMessageProperties()
-                .setHeader("key", "priceRequest");
+                .setType("priceRequest");
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 priceServiceRoutingKey,
