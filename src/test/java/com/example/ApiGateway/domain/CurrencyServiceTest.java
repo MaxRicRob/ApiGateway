@@ -1,11 +1,8 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.entity.Currency;
 import com.example.ApiGateway.entity.CurrencyRequest;
 import com.example.ApiGateway.entity.CurrencyResponse;
 import com.google.gson.Gson;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +23,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
 class CurrencyServiceTest {
 
 
