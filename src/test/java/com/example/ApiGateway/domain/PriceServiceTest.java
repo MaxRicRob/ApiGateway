@@ -15,10 +15,10 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -38,11 +38,14 @@ class PriceServiceTest {
     public static final String ROUTING_KEY = "routingKey";
 
     @BeforeEach
-    void setUp() throws IllegalAccessException, NoSuchFieldException {
-        Field field = priceService.getClass()
-                .getDeclaredField("priceServiceRoutingKey");
-        field                        .setAccessible(true);
-        field.set(priceService, ROUTING_KEY);
+    void setUp() {
+        try {
+            var field = priceService.getClass().getDeclaredField("priceServiceRoutingKey");
+            field.setAccessible(true);
+            field.set(priceService, ROUTING_KEY);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            fail();
+        }
     }
 
     @Test
