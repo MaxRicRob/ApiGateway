@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.example.ApiGateway.domain.MessageType.PRICE_REQUEST;
+
 @RequiredArgsConstructor
 @Slf4j
 public class PriceService {
@@ -27,7 +29,7 @@ public class PriceService {
     public PriceResponse getPrice(PriceRequest priceRequest) {
         var message = new Message((new Gson().toJson(priceRequest)).getBytes());
         message.getMessageProperties()
-                .setType("priceRequest");
+                .setType(PRICE_REQUEST.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 priceServiceRoutingKey,

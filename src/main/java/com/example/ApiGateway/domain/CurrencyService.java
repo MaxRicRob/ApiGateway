@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.example.ApiGateway.domain.MessageType.CURRENCY_REQUEST;
+
 @RequiredArgsConstructor
 @Slf4j
 public class CurrencyService {
@@ -28,7 +30,7 @@ public class CurrencyService {
     public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
         var message = new Message((new Gson().toJson(currencyRequest)).getBytes());
         message.getMessageProperties()
-                .setType("currencyRequest");
+                .setType(CURRENCY_REQUEST.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 currencyServiceRoutingKey,

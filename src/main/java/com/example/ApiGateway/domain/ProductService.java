@@ -18,6 +18,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.ApiGateway.domain.MessageType.CREATE_PRODUCT;
+import static com.example.ApiGateway.domain.MessageType.DELETE_PRODUCT;
+import static com.example.ApiGateway.domain.MessageType.GET_COMPONENTS;
+import static com.example.ApiGateway.domain.MessageType.GET_DEFAULT_PRODUCTS;
+import static com.example.ApiGateway.domain.MessageType.GET_PRODUCTS_FROM_USER;
+import static com.example.ApiGateway.domain.MessageType.UPDATE_PRODUCT;
+
 @RequiredArgsConstructor
 @Slf4j
 public class ProductService {
@@ -32,7 +39,7 @@ public class ProductService {
     public List<ProductComponent> getAllComponents() {
 
         var message = new Message("".getBytes());
-        setMessageType(message, "getComponents");
+        setMessageType(message, GET_COMPONENTS.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -52,7 +59,7 @@ public class ProductService {
     public List<DefaultProduct> getDefaultProducts() {
 
         var message =  new Message("".getBytes());
-        setMessageType(message, "getDefaultProducts");
+        setMessageType(message, GET_DEFAULT_PRODUCTS.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -73,7 +80,7 @@ public class ProductService {
     public List<Product> getProductsFromUser(String userName) {
 
         var message = new Message(userName.getBytes());
-        setMessageType(message, "getProductsFromUser");
+        setMessageType(message, GET_PRODUCTS_FROM_USER.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -93,7 +100,7 @@ public class ProductService {
     public Product deleteProduct(String id) {
 
         var message = new Message(id.getBytes());
-        setMessageType(message,"deleteProduct" );
+        setMessageType(message, DELETE_PRODUCT.name() );
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -112,7 +119,7 @@ public class ProductService {
     public Product createProduct(Product product) {
 
         var message = new Message(new Gson().toJson(product).getBytes());
-        setMessageType(message,"createProduct");
+        setMessageType(message, CREATE_PRODUCT.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
@@ -130,7 +137,7 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
         var message = new Message(new Gson().toJson(product).getBytes());
-        setMessageType(message,"updateProduct");
+        setMessageType(message, UPDATE_PRODUCT.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,
