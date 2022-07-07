@@ -29,11 +29,11 @@ class PriceServiceTest {
 
 
     @InjectMocks
-    PriceService priceService;
+    private PriceService priceService;
     @Mock
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
     @Mock
-    DirectExchange directExchange;
+    private DirectExchange directExchange;
 
     public static final String ROUTING_KEY = "routingKey";
 

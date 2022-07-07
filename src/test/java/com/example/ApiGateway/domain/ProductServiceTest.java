@@ -31,11 +31,11 @@ class ProductServiceTest {
     public static final String TEST_PRODUCT = "testProduct";
     public static final String TEST_USER = "testUser";
     @InjectMocks
-    ProductService productService;
+    private ProductService productService;
     @Mock
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
     @Mock
-    DirectExchange directExchange;
+    private DirectExchange directExchange;
 
     public static final String ROUTING_KEY = "routingKey";
 

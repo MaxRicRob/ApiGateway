@@ -15,20 +15,20 @@ import static org.mockito.Mockito.verify;
 class ApiServiceTest {
 
     @InjectMocks
-    ApiService apiService;
+    private ApiService apiService;
 
     @Mock
-    ProductService productService;
+    private ProductService productService;
     @Mock
-    PriceService priceService;
+    private PriceService priceService;
     @Mock
-    CurrencyService currencyService;
+    private CurrencyService currencyService;
     @Mock
-    Product product;
+    private Product product;
     @Mock
-    PriceRequest priceRequest;
+    private PriceRequest priceRequest;
     @Mock
-    CurrencyRequest currencyRequest;
+    private CurrencyRequest currencyRequest;
 
     @Test
     void getDefaultProducts() {

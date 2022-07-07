@@ -27,11 +27,11 @@ class CurrencyServiceTest {
 
 
     @InjectMocks
-    CurrencyService currencyService;
+    private CurrencyService currencyService;
     @Mock
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
     @Mock
-    DirectExchange directExchange;
+    private DirectExchange directExchange;
 
     public static final String ROUTING_KEY = "routingKey";
 
