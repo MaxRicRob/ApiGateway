@@ -27,6 +27,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
 
+    public static final String TEST = "test";
+    public static final String TEST_PRODUCT = "testProduct";
+    public static final String TEST_USER = "testUser";
     @InjectMocks
     ProductService productService;
     @Mock
@@ -50,19 +53,19 @@ class ProductServiceTest {
 
     @Test
     void get_all_components_empty_response_message() {
-        when(directExchange.getName()).thenReturn("test");
+        when(directExchange.getName()).thenReturn(TEST);
 
         var receivedResponse = productService.getAllComponents();
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
         assertThat(receivedResponse).isEmpty();
     }
 
     @Test
     void get_all_components_non_empty_response_message() {
         var components = getTestComponents();
-        when(directExchange.getName()).thenReturn("test");
-        when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
+        when(directExchange.getName()).thenReturn(TEST);
+        when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(components)).getBytes()));
 
         var receivedResponse = productService.getAllComponents();
@@ -75,118 +78,118 @@ class ProductServiceTest {
 
     @Test
     void get_default_products_empty_response_message() {
-        when(directExchange.getName()).thenReturn("test");
+        when(directExchange.getName()).thenReturn(TEST);
 
         var receivedResponse =  productService.getDefaultProducts();
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
         assertThat(receivedResponse).isEmpty();
     }
 
     @Test
     void get_default_products_non_empty_response_message() {
-        var defaultProducts = getDefaultProducts("testProduct");
-        when(directExchange.getName()).thenReturn("test");
-        when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
+        var defaultProducts = getDefaultProducts();
+        when(directExchange.getName()).thenReturn(TEST);
+        when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(defaultProducts)).getBytes()));
 
         var receivedResponse = productService.getDefaultProducts();
 
-        assertThat(receivedResponse.get(0).getName()).isEqualTo("testProduct");
+        assertThat(receivedResponse.get(0).getName()).isEqualTo(TEST_PRODUCT);
         assertThat(receivedResponse.get(0).getId()).isEqualTo(0);
         assertThat(receivedResponse.get(0).getComponents().size()).isEqualTo(3);
     }
 
     @Test
     void get_products_from_user_empty_response_message() {
-        when(directExchange.getName()).thenReturn("test");
+        when(directExchange.getName()).thenReturn(TEST);
 
-        var receivedResponse =  productService.getProductsFromUser("testUser");
+        var receivedResponse =  productService.getProductsFromUser(TEST_USER);
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
         assertThat(receivedResponse).isEmpty();
     }
 
     @Test
     void get_products_from_user_non_empty_response_message() {
-        var userProducts = getUserProducts("testUser");
-        when(directExchange.getName()).thenReturn("test");
-        when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
+        var userProducts = getUserProducts();
+        when(directExchange.getName()).thenReturn(TEST);
+        when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProducts)).getBytes()));
 
-        var receivedResponse = productService.getProductsFromUser("testUser");
+        var receivedResponse = productService.getProductsFromUser(TEST_USER);
 
-        assertThat(receivedResponse.get(0).getName()).isEqualTo("testProduct");
-        assertThat(receivedResponse.get(0).getUserName()).isEqualTo("testUser");
+        assertThat(receivedResponse.get(0).getName()).isEqualTo(TEST_PRODUCT);
+        assertThat(receivedResponse.get(0).getUserName()).isEqualTo(TEST_USER);
         assertThat(receivedResponse.get(0).getComponents().size()).isEqualTo(3);
     }
 
     @Test
     void delete_product_empty_response_message() {
-        when(directExchange.getName()).thenReturn("test");
+        when(directExchange.getName()).thenReturn(TEST);
 
         productService.deleteProduct("0");
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
     }
 
     @Test
     void delete_product_non_empty_response_message() {
-        var userProduct = getTestProduct("testUser");
-        when(directExchange.getName()).thenReturn("test");
-        when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
+        var userProduct = getTestProduct();
+        when(directExchange.getName()).thenReturn(TEST);
+        when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProduct)).getBytes()));
 
         var receivedResponse = productService.deleteProduct("0");
 
-        assertThat(receivedResponse.getName()).isEqualTo("testProduct");
-        assertThat(receivedResponse.getUserName()).isEqualTo("testUser");
+        assertThat(receivedResponse.getName()).isEqualTo(TEST_PRODUCT);
+        assertThat(receivedResponse.getUserName()).isEqualTo(TEST_USER);
         assertThat(receivedResponse.getComponents().size()).isEqualTo(3);
     }
 
     @Test
     void create_product_empty_message_response() {
-        when(directExchange.getName()).thenReturn("test");
+        when(directExchange.getName()).thenReturn(TEST);
 
-        productService.createProduct(getTestProduct("testUser"));
+        productService.createProduct(getTestProduct());
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
     }
 
     @Test
     void create_product_non_empty_message_response() {
-        var userProduct = getTestProduct("testUser");
-        when(directExchange.getName()).thenReturn("test");
-        when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
+        var userProduct = getTestProduct();
+        when(directExchange.getName()).thenReturn(TEST);
+        when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProduct)).getBytes()));
 
         var receivedResponse = productService.createProduct(userProduct);
 
-        assertThat(receivedResponse.getName()).isEqualTo("testProduct");
-        assertThat(receivedResponse.getUserName()).isEqualTo("testUser");
+        assertThat(receivedResponse.getName()).isEqualTo(TEST_PRODUCT);
+        assertThat(receivedResponse.getUserName()).isEqualTo(TEST_USER);
         assertThat(receivedResponse.getComponents().size()).isEqualTo(3);
     }
 
     @Test
     void update_product_empty_response_message() {
-        when(directExchange.getName()).thenReturn("test");
+        when(directExchange.getName()).thenReturn(TEST);
 
-        productService.updateProduct(getTestProduct("testUser"));
+        productService.updateProduct(getTestProduct());
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
     }
 
     @Test
     void update_product_non_empty_response_message() {
-        var userProduct = getTestProduct("testUser");
-        when(directExchange.getName()).thenReturn("test");
-        when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
+        var userProduct = getTestProduct();
+        when(directExchange.getName()).thenReturn(TEST);
+        when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProduct)).getBytes()));
 
         var receivedResponse = productService.updateProduct(userProduct);
 
-        assertThat(receivedResponse.getName()).isEqualTo("testProduct");
-        assertThat(receivedResponse.getUserName()).isEqualTo("testUser");
+        assertThat(receivedResponse.getName()).isEqualTo(TEST_PRODUCT);
+        assertThat(receivedResponse.getUserName()).isEqualTo(TEST_USER);
         assertThat(receivedResponse.getComponents().size()).isEqualTo(3);
 
     }
@@ -230,25 +233,25 @@ class ProductServiceTest {
         );
     }
 
-    private List<DefaultProduct> getDefaultProducts(String productName) {
+    private List<DefaultProduct> getDefaultProducts() {
         return List.of(
                 new DefaultProduct()
-                        .setName(productName)
+                        .setName(TEST_PRODUCT)
                         .setId(0)
                         .setComponents(getTestComponents())
         );
     }
 
-    private List<Product> getUserProducts(String userName) {
+    private List<Product> getUserProducts() {
         return List.of(
-                getTestProduct(userName)
+                getTestProduct()
         );
     }
 
-    private Product getTestProduct(String userName) {
+    private Product getTestProduct() {
         return new Product()
-                .setName("testProduct")
-                .setUserName(userName)
+                .setName(TEST_PRODUCT)
+                .setUserName(TEST_USER)
                 .setId(UUID.randomUUID())
                 .setComponents(getTestComponents());
     }
