@@ -1,9 +1,9 @@
 package com.example.ApiGateway.domain;
 
 
-import com.example.ApiGateway.entity.DefaultProduct;
-import com.example.ApiGateway.entity.Product;
-import com.example.ApiGateway.entity.ProductComponent;
+import com.example.ApiGateway.domain.entity.DefaultProduct;
+import com.example.ApiGateway.domain.entity.Product;
+import com.example.ApiGateway.domain.entity.ProductComponent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
@@ -154,11 +154,13 @@ public class ProductService {
     }
 
     private void setMessageType(Message message, String type) {
+
         message.getMessageProperties()
                 .setType(type);
     }
 
     private boolean receivedMessageIsEmpty(Message receivedMessage) {
+
         return receivedMessage == null;
     }
 

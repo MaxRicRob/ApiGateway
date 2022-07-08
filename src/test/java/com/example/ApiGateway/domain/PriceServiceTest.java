@@ -1,9 +1,7 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.entity.PriceRequest;
-import com.example.ApiGateway.entity.PriceResponse;
-import com.example.ApiGateway.entity.Product;
-import com.example.ApiGateway.entity.ProductComponent;
+import com.example.ApiGateway.domain.entity.PriceRequest;
+import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,65 +59,19 @@ class PriceServiceTest {
     void get_price_non_empty_response_message() {
         var priceRequest = getPriceRequest();
         var priceResponse = new PriceResponse()
-                .setId(1)
-                .setTotalPrice(5500);
+                .setTotalPrice(5000);
         when(directExchange.getName()).thenReturn("test");
         when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(priceResponse)).getBytes()));
 
         var receivedResponse = priceService.getPrice(priceRequest);
 
-        assertThat(receivedResponse.getId()).isEqualTo(1);
-        assertThat(receivedResponse.getTotalPrice()).isEqualTo(5500);
+        assertThat(receivedResponse.getTotalPrice()).isEqualTo(5000);
     }
 
     private PriceRequest getPriceRequest() {
 
         return new PriceRequest()
-                .setId(0L)
-                .setProduct(
-                        new Product()
-                                .setName("testProduct")
-                                .setComponents(getListOfTestComponents())
-                );
-    }
-
-    private List<ProductComponent> getListOfTestComponents() {
-
-        return List.of(
-                new ProductComponent()
-                        .setId(0)
-                        .setName("Pineapple")
-                        .setPrice(1700)
-                        .setWeight(0)
-                        .setColor("Yellow")
-                        .setOrigin("Mexico")
-                        .setAwesomeness(9)
-                        .setFarmer("Alice")
-                        .setOrganic(true)
-                        .setCalories(50),
-                new ProductComponent()
-                        .setId(0)
-                        .setName("Banana")
-                        .setPrice(2300)
-                        .setWeight(9)
-                        .setColor("Yellow")
-                        .setOrigin("Brazil")
-                        .setAwesomeness(7)
-                        .setFarmer("Bob")
-                        .setOrganic(false)
-                        .setCalories(88),
-                new ProductComponent()
-                        .setId(0)
-                        .setName("Apple")
-                        .setPrice(1500)
-                        .setWeight(8)
-                        .setColor("Red")
-                        .setOrigin("France")
-                        .setAwesomeness(6)
-                        .setFarmer("Charlie")
-                        .setOrganic(true)
-                        .setCalories(52)
-        );
+                .setPrices(List.of(500L, 1500L , 3000L));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ApiGateway.entity;
+package com.example.ApiGateway.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.entity.CurrencyRequest;
-import com.example.ApiGateway.entity.CurrencyResponse;
+import com.example.ApiGateway.api.dto.CurrencyResponse;
+import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 
-import static com.example.ApiGateway.entity.Currency.*;
+import static com.example.ApiGateway.domain.entity.Currency.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,8 +49,7 @@ class CurrencyServiceTest {
     @Test
     void get_Currency_empty_response_message() {
         var currencyRequest = new CurrencyRequest()
-                .setWantedCurrency(MXN)
-                .setId(1);
+                .setWantedCurrency(MXN);
         when(directExchange.getName()).thenReturn("test");
         currencyService.getCurrency(currencyRequest);
 
@@ -60,20 +59,17 @@ class CurrencyServiceTest {
     @Test
     void get_currency_non_empty_response_message() {
         var currencyRequest = new CurrencyRequest()
-                .setWantedCurrency(MXN)
-                .setId(1);
+                .setWantedCurrency(MXN);
         var currencyResponse = new CurrencyResponse()
-                .setId(1)
-                .setUpdatedCurrency(MXN)
-                .setUpdatedPrice(200);
+                .setWantedCurrency(MXN)
+                .setTotalPrice(200);
         when(directExchange.getName()).thenReturn("test");
         when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(currencyResponse)).getBytes()));
 
         var receivedResponse = currencyService.getCurrency(currencyRequest);
 
-        assertThat(receivedResponse.getId()).isEqualTo(1);
-        assertThat(receivedResponse.getUpdatedCurrency()).isEqualTo(MXN);
-        assertThat(receivedResponse.getUpdatedPrice()).isEqualTo(200);
+        assertThat(receivedResponse.getWantedCurrency()).isEqualTo(MXN);
+        assertThat(receivedResponse.getTotalPrice()).isEqualTo(200);
     }
 }

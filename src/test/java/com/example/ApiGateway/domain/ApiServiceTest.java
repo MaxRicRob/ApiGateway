@@ -1,8 +1,9 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.entity.CurrencyRequest;
-import com.example.ApiGateway.entity.PriceRequest;
-import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.api.ApiService;
+import com.example.ApiGateway.domain.entity.CurrencyRequest;
+import com.example.ApiGateway.domain.entity.PriceRequest;
+import com.example.ApiGateway.domain.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -74,14 +75,14 @@ class ApiServiceTest {
 
     @Test
     void getPrice() {
-        apiService.getPrice(priceRequest);
+        apiService.getFromPriceService(priceRequest);
 
         verify(priceService).getPrice(priceRequest);
     }
 
     @Test
     void getCurrency() {
-        apiService.getCurrency(currencyRequest);
+        apiService.getFromCurrencyService(currencyRequest);
 
         verify(currencyService).getCurrency(currencyRequest);
     }
