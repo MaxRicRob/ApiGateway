@@ -1,6 +1,5 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.api.dto.CurrencyResponse;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,13 +58,11 @@ class CurrencyServiceTest {
     @Test
     void get_currency_non_empty_response_message() {
         var currencyRequest = new CurrencyRequest()
-                .setWantedCurrency(MXN);
-        var currencyResponse = new CurrencyResponse()
                 .setWantedCurrency(MXN)
                 .setTotalPrice(200);
         when(directExchange.getName()).thenReturn("test");
         when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
-                .thenReturn(new Message((new Gson().toJson(currencyResponse)).getBytes()));
+                .thenReturn(new Message((new Gson().toJson(currencyRequest)).getBytes()));
 
         var receivedResponse = currencyService.getCurrency(currencyRequest);
 

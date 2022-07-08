@@ -1,14 +1,12 @@
 package com.example.ApiGateway.api;
 
 
-import com.example.ApiGateway.api.dto.CurrencyResponse;
-import com.example.ApiGateway.api.dto.ProductResponse;
-import com.example.ApiGateway.api.dto.DefaultProductResponse;
-import com.example.ApiGateway.api.dto.ProductComponentResponse;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
+import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.example.ApiGateway.domain.entity.Product;
+import com.example.ApiGateway.domain.entity.ProductComponent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,7 @@ public class Controller {
     @GetMapping("/defaultProducts")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Products from Warehouse.")
-    public List<DefaultProductResponse> getDefaultProducts() {
+    public List<DefaultProduct> getDefaultProducts() {
 
         return apiService.getDefaultProducts();
     }
@@ -36,7 +34,7 @@ public class Controller {
     @GetMapping("/productComponents")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Product Components from Warehouse.")
-    public List<ProductComponentResponse> getProductComponents() {
+    public List<ProductComponent> getProductComponents() {
 
         return apiService.getProductComponents();
     }
@@ -44,7 +42,7 @@ public class Controller {
     @GetMapping("/products/{userName}")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Products from user by username.")
-    public List<ProductResponse> getProductsFromUser(
+    public List<Product> getProductsFromUser(
             @Parameter(description = "Name of the user")
             @PathVariable final String userName) {
 
@@ -54,7 +52,7 @@ public class Controller {
     @DeleteMapping("/products/{id}")
     @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Delete a product by its id.")
-    public ProductResponse deleteProduct(
+    public Product deleteProduct(
             @Parameter(description = "UUID of the product")
             @PathVariable final String id) {
 
@@ -64,7 +62,7 @@ public class Controller {
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Operation(summary = "Create a product.")
-    public ProductResponse createProduct(
+    public Product createProduct(
             @Parameter(description = "Product that needs to be created")
             @RequestBody final Product product) {
 
@@ -74,7 +72,7 @@ public class Controller {
     @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Operation(summary = "Update a product.")
-    public ProductResponse updateProduct(
+    public Product updateProduct(
             @Parameter(description = "Updated Product")
             @RequestBody final Product product) {
 
@@ -91,7 +89,7 @@ public class Controller {
 
     @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product in a specific currency of your choice")
-    public CurrencyResponse getCurrency(
+    public CurrencyRequest getCurrency(
             @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
             @RequestBody final CurrencyRequest currencyRequest) {
 
