@@ -1,7 +1,6 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.entity.CurrencyResponse;
-import com.example.ApiGateway.entity.CurrencyRequest;
+import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 import static com.example.ApiGateway.domain.MessageType.CURRENCY_REQUEST;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class CurrencyService {
 
     @Autowired
@@ -27,7 +26,7 @@ public class CurrencyService {
     @Value("${routing-keys.currency-service}")
     private String currencyServiceRoutingKey;
 
-    public CurrencyResponse getCurrency(CurrencyRequest currencyRequest) {
+    public CurrencyRequest getCurrency(CurrencyRequest currencyRequest) {
         var message = new Message((new Gson().toJson(currencyRequest)).getBytes());
         message.getMessageProperties()
                 .setType(CURRENCY_REQUEST.name());
@@ -37,12 +36,12 @@ public class CurrencyService {
                 message
         );
         if (receivedMessage == null) {
-            log.error("error while receiving CurrencyResponse, because received Message from Currency Service via rabbitmq is empty");
-            return new CurrencyResponse();
+            log.error("error while receiving CurrencyRequest, because received Message from Currency Service via rabbitmq is empty");
+            return new CurrencyRequest();
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                CurrencyResponse.class
+                CurrencyRequest.class
         );
     }
 }

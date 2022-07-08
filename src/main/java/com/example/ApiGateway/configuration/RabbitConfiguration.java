@@ -17,72 +17,76 @@ public class RabbitConfiguration {
 
     @Value("${xchange.name}")
     private String directXchangeName;
-
     @Value("${routing-keys.product-service}")
     private String productServiceRoutingKey;
-
     @Value("${routing-keys.price-service}")
     private String priceServiceRoutingKey;
-
     @Value("${routing-keys.currency-service}")
     private String currencyServiceRoutingKey;
-
     @Value("${queue-names.product-service}")
     private String productServiceQueueName;
-
     @Value("${queue-names.price-service}")
     private String priceServiceQueueName;
-
     @Value("${queue-names.currency-service}")
     private String currencyServiceQueueName;
 
     @Bean
     public DirectExchange directExchange() {
+
         return new DirectExchange(directXchangeName);
     }
 
     @Bean
     public ProductService productService() {
+
         return new ProductService();
     }
 
     @Bean
     public PriceService priceService() {
+
         return new PriceService();
     }
 
     @Bean
     public CurrencyService currencyService() {
+
         return new CurrencyService();
     }
 
     @Bean
     public Queue productServiceQueue() {
+
         return new Queue(productServiceQueueName);
     }
 
     @Bean
     public Queue priceServiceQueue() {
+
         return new Queue(priceServiceQueueName);
     }
 
     @Bean
     public Queue currencyServiceQueue() {
+
         return new Queue(currencyServiceQueueName);
     }
 
     @Bean
     public Binding productServiceBinding(DirectExchange directExchange, Queue productServiceQueue) {
+
         return BindingBuilder.bind(productServiceQueue).to(directExchange).with(productServiceRoutingKey);
     }
 
     @Bean
     public Binding priceServiceBinding(DirectExchange directExchange, Queue priceServiceQueue) {
+
         return BindingBuilder.bind(priceServiceQueue).to(directExchange).with(priceServiceRoutingKey);
     }
 
     @Bean
     public Binding currencyServiceBinding(DirectExchange directExchange, Queue currencyServiceQueue) {
+
         return BindingBuilder.bind(currencyServiceQueue).to(directExchange).with(currencyServiceRoutingKey);
     }
 

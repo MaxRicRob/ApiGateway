@@ -1,4 +1,4 @@
-package com.example.ApiGateway.entity;
+package com.example.ApiGateway.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,11 +21,4 @@ public class Product {
     private String userName;
     private List<ProductComponent> components;
 
-    public static Product from(ProductResponse productResponse) {
-        return new Product()
-                .setId(productResponse.getId())
-                .setName(productResponse.getName())
-                .setUserName(productResponse.getUserName())
-                .setComponents(productResponse.getComponents());
-    }
 }

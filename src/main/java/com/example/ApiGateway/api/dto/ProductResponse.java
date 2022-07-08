@@ -1,5 +1,7 @@
-package com.example.ApiGateway.entity;
+package com.example.ApiGateway.api.dto;
 
+import com.example.ApiGateway.domain.entity.Product;
+import com.example.ApiGateway.domain.entity.ProductComponent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +21,11 @@ public class ProductResponse {
     private UUID id;
     private String name;
     private String userName;
+    private long totalPrice;
     private List<ProductComponent> components;
 
     public static ProductResponse from(Product product) {
-        if (product.getId() == null) {
+        if (product == null) {
             return new ProductResponse();
         }
         return new ProductResponse()
@@ -31,4 +34,5 @@ public class ProductResponse {
                 .setUserName(product.getUserName())
                 .setComponents(product.getComponents());
     }
+
 }

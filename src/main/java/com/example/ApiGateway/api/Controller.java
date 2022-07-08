@@ -1,23 +1,21 @@
 package com.example.ApiGateway.api;
 
 
-import com.example.ApiGateway.entity.DefaultProductResponse;
-import com.example.ApiGateway.entity.CurrencyRequest;
-import com.example.ApiGateway.entity.CurrencyResponse;
-import com.example.ApiGateway.entity.PriceRequest;
-import com.example.ApiGateway.entity.PriceResponse;
-import com.example.ApiGateway.entity.Product;
-import com.example.ApiGateway.entity.ProductComponentResponse;
-import com.example.ApiGateway.entity.ProductResponse;
+import com.example.ApiGateway.api.dto.CurrencyResponse;
+import com.example.ApiGateway.api.dto.ProductResponse;
+import com.example.ApiGateway.api.dto.DefaultProductResponse;
+import com.example.ApiGateway.api.dto.ProductComponentResponse;
+import com.example.ApiGateway.domain.entity.CurrencyRequest;
+import com.example.ApiGateway.domain.entity.PriceRequest;
+import com.example.ApiGateway.domain.entity.PriceResponse;
+import com.example.ApiGateway.domain.entity.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import com.example.ApiGateway.domain.ApiService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -31,18 +29,16 @@ public class Controller {
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Products from Warehouse.")
     public List<DefaultProductResponse> getDefaultProducts() {
-        return apiService.getDefaultProducts().stream()
-                .map(DefaultProductResponse::from)
-                .collect(Collectors.toList());
+
+        return apiService.getDefaultProducts();
     }
 
     @GetMapping("/productComponents")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Product Components from Warehouse.")
     public List<ProductComponentResponse> getProductComponents() {
-        return apiService.getProductComponents().stream()
-                .map(ProductComponentResponse::from)
-                .collect(Collectors.toList());
+
+        return apiService.getProductComponents();
     }
 
     @GetMapping("/products/{userName}")
@@ -51,9 +47,8 @@ public class Controller {
     public List<ProductResponse> getProductsFromUser(
             @Parameter(description = "Name of the user")
             @PathVariable final String userName) {
-        return apiService.getProductsFromUser(userName).stream()
-                .map(ProductResponse::from)
-                .collect(Collectors.toList());
+
+        return apiService.getProductsFromUser(userName);
     }
 
     @DeleteMapping("/products/{id}")
@@ -62,7 +57,8 @@ public class Controller {
     public ProductResponse deleteProduct(
             @Parameter(description = "UUID of the product")
             @PathVariable final String id) {
-        return ProductResponse.from(apiService.deleteProduct(id));
+
+        return apiService.deleteProduct(id);
     }
 
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +67,8 @@ public class Controller {
     public ProductResponse createProduct(
             @Parameter(description = "Product that needs to be created")
             @RequestBody final Product product) {
-        return ProductResponse.from(apiService.createProduct(product));
+
+        return apiService.createProduct(product);
     }
 
     @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -80,14 +77,16 @@ public class Controller {
     public ProductResponse updateProduct(
             @Parameter(description = "Updated Product")
             @RequestBody final Product product) {
-        return ProductResponse.from(apiService.updateProduct(product));
+
+        return apiService.updateProduct(product);
     }
 
     @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product.")
     public PriceResponse getPrice(
             @RequestBody final PriceRequest priceRequest) {
-        return apiService.getPrice(priceRequest);
+
+        return apiService.getFromPriceService(priceRequest);
     }
 
     @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -95,7 +94,8 @@ public class Controller {
     public CurrencyResponse getCurrency(
             @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
             @RequestBody final CurrencyRequest currencyRequest) {
-        return apiService.getCurrency(currencyRequest);
+
+        return apiService.getFromCurrencyService(currencyRequest);
     }
 
 }
