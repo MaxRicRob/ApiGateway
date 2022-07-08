@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,10 @@ public class ApiService {
 
     public ProductResponse createProduct(Product product) {
 
-        return ProductResponse.from(productService.createProduct(product));
+        product.setId(UUID.randomUUID());
+        return ProductResponse.from(
+                productService.createProduct(product)
+                );
     }
 
     public ProductResponse updateProduct(Product product) {
