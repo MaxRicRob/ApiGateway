@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.api.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import static com.example.ApiGateway.domain.entity.Currency.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -50,9 +52,10 @@ class CurrencyServiceTest {
         var currencyRequest = new CurrencyRequest()
                 .setWantedCurrency(MXN);
         when(directExchange.getName()).thenReturn("test");
-        currencyService.getCurrency(currencyRequest);
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        assertThrows(ErrorResponseException.class, () ->
+                currencyService.getCurrency(currencyRequest));
+
     }
 
     @Test

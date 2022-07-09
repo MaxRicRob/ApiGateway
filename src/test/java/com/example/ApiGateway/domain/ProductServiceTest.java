@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.api.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -55,10 +57,9 @@ class ProductServiceTest {
     void get_all_components_empty_response_message() {
         when(directExchange.getName()).thenReturn(TEST);
 
-        var receivedResponse = productService.getAllComponents();
+        assertThrows(ErrorResponseException.class, () ->
+                productService.getAllComponents());
 
-        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
-        assertThat(receivedResponse).isEmpty();
     }
 
     @Test
@@ -80,10 +81,9 @@ class ProductServiceTest {
     void get_default_products_empty_response_message() {
         when(directExchange.getName()).thenReturn(TEST);
 
-        var receivedResponse =  productService.getDefaultProducts();
+        assertThrows(ErrorResponseException.class, () ->
+                productService.getDefaultProducts());
 
-        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
-        assertThat(receivedResponse).isEmpty();
     }
 
     @Test
@@ -104,10 +104,8 @@ class ProductServiceTest {
     void get_products_from_user_empty_response_message() {
         when(directExchange.getName()).thenReturn(TEST);
 
-        var receivedResponse =  productService.getProductsFromUser(TEST_USER);
-
-        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
-        assertThat(receivedResponse).isEmpty();
+        assertThrows(ErrorResponseException.class, () ->
+                productService.getProductsFromUser(TEST_USER));
     }
 
     @Test
@@ -128,9 +126,8 @@ class ProductServiceTest {
     void delete_product_empty_response_message() {
         when(directExchange.getName()).thenReturn(TEST);
 
-        productService.deleteProduct("0");
-
-        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
+        assertThrows(ErrorResponseException.class, () ->
+                productService.deleteProduct("0"));
     }
 
     @Test
@@ -151,9 +148,8 @@ class ProductServiceTest {
     void create_product_empty_message_response() {
         when(directExchange.getName()).thenReturn(TEST);
 
-        productService.createProduct(getTestProduct());
-
-        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
+        assertThrows(ErrorResponseException.class, () ->
+                productService.createProduct(getTestProduct()));
     }
 
     @Test
@@ -174,9 +170,8 @@ class ProductServiceTest {
     void update_product_empty_response_message() {
         when(directExchange.getName()).thenReturn(TEST);
 
-        productService.updateProduct(getTestProduct());
-
-        verify(rabbitTemplate).sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class));
+        assertThrows(ErrorResponseException.class, () ->
+                productService.updateProduct(getTestProduct()));
     }
 
     @Test
