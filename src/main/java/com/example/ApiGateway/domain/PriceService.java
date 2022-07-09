@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.api.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
@@ -35,13 +37,19 @@ public class PriceService {
                 priceServiceRoutingKey,
                 message
         );
-        if (receivedMessage == null) {
+        if (receivedMessageIsError(receivedMessage)) {
             log.error("error while receiving PriceResponse, because received Message from Price Service via rabbitmq is empty");
-            return new PriceResponse();
+            throw new ErrorResponseException("couldn't receive priceRequest");
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
                 PriceResponse.class
         );
+    }
+
+    private boolean receivedMessageIsError(Message receivedMessage) {
+        return receivedMessage == null ||
+                receivedMessage.getBody() == null ||
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8).equals("errorResponse");
     }
 }

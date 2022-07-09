@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.api.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
@@ -35,13 +37,19 @@ public class CurrencyService {
                 currencyServiceRoutingKey,
                 message
         );
-        if (receivedMessage == null) {
+        if (receivedMessageIsError(receivedMessage)) {
             log.error("error while receiving CurrencyRequest, because received Message from Currency Service via rabbitmq is empty");
-            return new CurrencyRequest();
+            throw new ErrorResponseException("couldn't receive CurrencyRequest");
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
                 CurrencyRequest.class
         );
+    }
+
+    private boolean receivedMessageIsError(Message receivedMessage) {
+        return receivedMessage == null ||
+                receivedMessage.getBody() == null ||
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8).equals("errorResponse");
     }
 }

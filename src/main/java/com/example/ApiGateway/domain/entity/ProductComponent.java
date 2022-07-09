@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class ProductComponent {
     private int weight;
     private String color;
     private String origin;
+    @Schema(minimum = "1", maximum = "10")
     private int awesomeness;
     private String farmer;
     private boolean organic;

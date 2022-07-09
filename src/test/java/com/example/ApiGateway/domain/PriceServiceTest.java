@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.api.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -50,9 +52,9 @@ class PriceServiceTest {
     void get_price_empty_response_message() {
         var priceRequest = getPriceRequest();
         when(directExchange.getName()).thenReturn("test");
-        priceService.getPrice(priceRequest);
 
-        verify(rabbitTemplate).sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class));
+        assertThrows(ErrorResponseException.class, () ->
+                priceService.getPrice(priceRequest));
     }
 
     @Test

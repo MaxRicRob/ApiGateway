@@ -1,6 +1,7 @@
 package com.example.ApiGateway.domain;
 
 
+import com.example.ApiGateway.api.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
@@ -13,9 +14,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.ApiGateway.domain.MessageType.CREATE_PRODUCT;
@@ -45,9 +46,9 @@ public class ProductService {
                 productServiceRoutingKey,
                 message
         );
-        if (receivedMessageIsEmpty(receivedMessage)) {
+        if (receivedMessageIsError(receivedMessage)) {
             trackErrorFor("receiving productComponents");
-            return Collections.emptyList();
+            throw new ErrorResponseException("couldn't receive components");
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
@@ -65,9 +66,9 @@ public class ProductService {
                 productServiceRoutingKey,
                 message
         );
-        if (receivedMessageIsEmpty(receivedMessage)) {
+        if (receivedMessageIsError(receivedMessage)) {
             trackErrorFor("receiving defaultProducts");
-            return Collections.emptyList();
+            throw new ErrorResponseException("couldn't receive default products");
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
@@ -86,9 +87,9 @@ public class ProductService {
                 productServiceRoutingKey,
                 message
         );
-        if (receivedMessageIsEmpty(receivedMessage)) {
+        if (receivedMessageIsError(receivedMessage)) {
             trackErrorFor("receiving Products");
-            return Collections.emptyList();
+            throw new ErrorResponseException("couldn't receive products from user: " + userName);
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
@@ -106,9 +107,9 @@ public class ProductService {
                 productServiceRoutingKey,
                 message
         );
-        if (receivedMessageIsEmpty(receivedMessage)) {
+        if (receivedMessageIsError(receivedMessage)) {
             trackErrorFor("deleting Product");
-            return new Product();
+            throw new ErrorResponseException("couldn't delete product");
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
@@ -125,9 +126,10 @@ public class ProductService {
                 productServiceRoutingKey,
                 message
         );
-        if (receivedMessageIsEmpty(receivedMessage)) {
+        if (receivedMessageIsError(receivedMessage)) {
             trackErrorFor("creating Product");
-            return new Product();
+            throw new ErrorResponseException("couldn't create product");
+
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
@@ -143,9 +145,9 @@ public class ProductService {
                 productServiceRoutingKey,
                 message
         );
-        if (receivedMessageIsEmpty(receivedMessage)) {
+        if (receivedMessageIsError(receivedMessage)) {
             trackErrorFor("updating Product");
-            return new Product();
+            throw new ErrorResponseException("couldn't update product");
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
@@ -159,10 +161,12 @@ public class ProductService {
                 .setType(type);
     }
 
-    private boolean receivedMessageIsEmpty(Message receivedMessage) {
-
-        return receivedMessage == null;
+    private boolean receivedMessageIsError(Message receivedMessage) {
+        return receivedMessage == null ||
+                receivedMessage.getBody() == null ||
+                new String(receivedMessage.getBody(), StandardCharsets.UTF_8).equals("errorResponse");
     }
+
 
     private void trackErrorFor(String taskName) {
         log.error("error while '{}', because received Message from Product Service via rabbitmq is empty", taskName);
