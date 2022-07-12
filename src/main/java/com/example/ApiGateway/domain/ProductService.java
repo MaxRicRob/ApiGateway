@@ -52,8 +52,7 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<ProductComponent>>() {
-                }.getType()
+                new TypeToken<List<ProductComponent>>() {}.getType()
         );
     }
 
@@ -72,8 +71,7 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<DefaultProduct>>() {
-                }.getType()
+                new TypeToken<List<DefaultProduct>>() {}.getType()
         );
     }
 
@@ -93,8 +91,7 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<Product>>() {
-                }.getType()
+                new TypeToken<List<Product>>() {}.getType()
         );
     }
 
