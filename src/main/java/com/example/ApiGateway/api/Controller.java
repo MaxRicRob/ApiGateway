@@ -53,7 +53,6 @@ public class Controller {
             @PathVariable final String userName) {
 
         log.info("get Products from User {} Endpoint called", userName);
-
         return apiService.getProductsFromUser(userName);
     }
 
