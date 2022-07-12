@@ -1,8 +1,6 @@
-package com.example.ApiGateway.api;
+package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.CurrencyService;
-import com.example.ApiGateway.domain.PriceService;
-import com.example.ApiGateway.domain.ProductService;
+
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.PriceRequest;
@@ -13,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

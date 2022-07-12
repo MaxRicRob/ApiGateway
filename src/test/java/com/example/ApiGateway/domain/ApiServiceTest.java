@@ -1,6 +1,5 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.api.ApiService;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.Product;

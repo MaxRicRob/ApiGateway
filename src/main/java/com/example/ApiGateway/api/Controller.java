@@ -1,6 +1,7 @@
 package com.example.ApiGateway.api;
 
 
+import com.example.ApiGateway.domain.ApiService;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.PriceRequest;
@@ -79,7 +80,7 @@ public class Controller {
     }
 
     @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(CREATED)
+    @ResponseStatus(OK)
     @Operation(summary = "Update a product.")
     public Product updateProduct(
             @Parameter(description = "Updated Product")
@@ -91,6 +92,7 @@ public class Controller {
 
     @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product.")
+    @ResponseStatus(OK)
     public PriceResponse getPrice(
             @RequestBody final PriceRequest priceRequest) {
 
@@ -100,6 +102,7 @@ public class Controller {
 
     @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product in a specific currency of your choice")
+    @ResponseStatus(OK)
     public CurrencyRequest getCurrency(
             @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
             @RequestBody final CurrencyRequest currencyRequest) {
