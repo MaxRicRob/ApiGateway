@@ -10,6 +10,7 @@ import com.example.ApiGateway.domain.entity.ProductComponent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin("http://localhost:3000")
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class Controller {
@@ -28,6 +31,7 @@ public class Controller {
     @Operation(summary = "Get all Default Products from Warehouse.")
     public List<DefaultProduct> getDefaultProducts() {
 
+        log.info("get DefaultProducts Endpoint called");
         return apiService.getDefaultProducts();
     }
 
@@ -36,6 +40,7 @@ public class Controller {
     @Operation(summary = "Get all Default Product Components from Warehouse.")
     public List<ProductComponent> getProductComponents() {
 
+        log.info("get ProductComponents Endpoint called");
         return apiService.getProductComponents();
     }
 
@@ -45,6 +50,8 @@ public class Controller {
     public List<Product> getProductsFromUser(
             @Parameter(description = "Name of the user")
             @PathVariable final String userName) {
+
+        log.info("get Products from User {} Endpoint called", userName);
 
         return apiService.getProductsFromUser(userName);
     }
@@ -56,6 +63,7 @@ public class Controller {
             @Parameter(description = "UUID of the product")
             @PathVariable final String id) {
 
+        log.info("get delete product with id {} Endpoint called", id);
         return apiService.deleteProduct(id);
     }
 
@@ -66,6 +74,7 @@ public class Controller {
             @Parameter(description = "Product that needs to be created")
             @RequestBody final Product product) {
 
+        log.info("post Product for product {} Endpoint called", product.getName());
         return apiService.createProduct(product);
     }
 
@@ -76,6 +85,7 @@ public class Controller {
             @Parameter(description = "Updated Product")
             @RequestBody final Product product) {
 
+        log.info("update Product for product {} Endpoint called", product.getId());
         return apiService.updateProduct(product);
     }
 
@@ -84,6 +94,7 @@ public class Controller {
     public PriceResponse getPrice(
             @RequestBody final PriceRequest priceRequest) {
 
+        log.info("get priceRequest Endpoint called");
         return apiService.getFromPriceService(priceRequest);
     }
 
@@ -93,6 +104,7 @@ public class Controller {
             @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
             @RequestBody final CurrencyRequest currencyRequest) {
 
+        log.info("get currencyRequest Endpoint called");
         return apiService.getFromCurrencyService(currencyRequest);
     }
 
