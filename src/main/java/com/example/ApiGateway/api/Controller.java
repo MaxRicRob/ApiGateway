@@ -57,7 +57,7 @@ public class Controller {
     }
 
     @DeleteMapping("/products/{id}")
-    @ResponseStatus(NO_CONTENT)
+    @ResponseStatus(OK)
     @Operation(summary = "Delete a product by its id.")
     public Product deleteProduct(
             @Parameter(description = "UUID of the product")

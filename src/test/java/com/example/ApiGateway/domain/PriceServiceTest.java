@@ -1,6 +1,6 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.api.error.ErrorResponseException;
+import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.google.gson.Gson;

@@ -1,6 +1,6 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.api.error.ErrorResponseException;
+import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;

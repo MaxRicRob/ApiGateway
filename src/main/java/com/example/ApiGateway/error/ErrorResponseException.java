@@ -1,4 +1,4 @@
-package com.example.ApiGateway.api.error;
+package com.example.ApiGateway.error;
 
 public class ErrorResponseException extends RuntimeException {
 
