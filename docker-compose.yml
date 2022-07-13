@@ -6,7 +6,7 @@ services:
     command: java -jar target/ApiGatewayApplication-0.0.1-SNAPSHOT.jar
     build:
       context: .
-      dockerfile: .docker/Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - 8085:8085
     expose:
