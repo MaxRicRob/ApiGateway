@@ -16,7 +16,6 @@ class ApiServiceTest {
 
     @InjectMocks
     private ApiService apiService;
-
     @Mock
     private ProductService productService;
     @Mock

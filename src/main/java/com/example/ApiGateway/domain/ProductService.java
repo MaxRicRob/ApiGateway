@@ -1,10 +1,10 @@
 package com.example.ApiGateway.domain;
 
 
-import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
@@ -51,13 +51,14 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<ProductComponent>>() {}.getType()
+                new TypeToken<List<ProductComponent>>() {
+                }.getType()
         );
     }
 
     public List<DefaultProduct> getDefaultProducts() {
 
-        var message =  new Message("".getBytes());
+        var message = new Message("".getBytes());
         setMessageType(message, GET_DEFAULT_PRODUCTS.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
@@ -70,7 +71,8 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<DefaultProduct>>() {}.getType()
+                new TypeToken<List<DefaultProduct>>() {
+                }.getType()
         );
     }
 
@@ -90,14 +92,15 @@ public class ProductService {
         }
         return new Gson().fromJson(
                 new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                new TypeToken<List<Product>>() {}.getType()
+                new TypeToken<List<Product>>() {
+                }.getType()
         );
     }
 
     public Product deleteProduct(String id) {
 
         var message = new Message(id.getBytes());
-        setMessageType(message, DELETE_PRODUCT.name() );
+        setMessageType(message, DELETE_PRODUCT.name());
         var receivedMessage = rabbitTemplate.sendAndReceive(
                 directExchange.getName(),
                 productServiceRoutingKey,

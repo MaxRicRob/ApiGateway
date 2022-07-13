@@ -20,15 +20,15 @@ import static org.mockito.Mockito.verify;
 class ControllerTest {
 
     @InjectMocks
-    Controller controller;
+    private Controller controller;
     @Mock
-    ApiService apiService;
+    private ApiService apiService;
     @Mock
-    Product product;
+    private Product product;
     @Mock
-    PriceRequest priceRequest;
+    private PriceRequest priceRequest;
     @Mock
-    CurrencyRequest currencyRequest;
+    private CurrencyRequest currencyRequest;
 
     @Test
     void getDefaultProducts() {
