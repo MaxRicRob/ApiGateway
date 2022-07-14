@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -131,16 +132,13 @@ class ProductServiceTest {
 
     @Test
     void delete_product_non_empty_response_message() {
-        var userProduct = getTestProduct();
         when(directExchange.getName()).thenReturn(TEST);
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
-                .thenReturn(new Message((new Gson().toJson(userProduct)).getBytes()));
+                .thenReturn(new Message(("deleted").getBytes()));
 
         var receivedResponse = productService.deleteProduct("0");
 
-        assertThat(receivedResponse.getName()).isEqualTo(TEST_PRODUCT);
-        assertThat(receivedResponse.getUserName()).isEqualTo(TEST_USER);
-        assertThat(receivedResponse.getComponents().size()).isEqualTo(3);
+        assertThat(receivedResponse).isEqualTo("deleted");
     }
 
     @Test

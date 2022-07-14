@@ -97,7 +97,7 @@ public class ProductService {
         );
     }
 
-    public Product deleteProduct(String id) {
+    public String deleteProduct(String id) {
 
         var message = new Message(id.getBytes());
         setMessageType(message, DELETE_PRODUCT.name());
@@ -110,10 +110,7 @@ public class ProductService {
             trackErrorFor("deleting Product");
             throw new ErrorResponseException("couldn't delete product");
         }
-        return new Gson().fromJson(
-                new String(receivedMessage.getBody(), StandardCharsets.UTF_8),
-                Product.class
-        );
+        return new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
     }
 
     public Product createProduct(Product product) {

@@ -36,7 +36,7 @@ public class ApiService {
         return productService.getProductsFromUser(userName);
     }
 
-    public Product deleteProduct(String id) {
+    public String deleteProduct(String id) {
 
         return productService.deleteProduct(id);
     }
