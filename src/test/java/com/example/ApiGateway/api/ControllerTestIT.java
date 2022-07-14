@@ -70,6 +70,7 @@ public class ControllerTestIT {
 
         try {
             when(apiService.getDefaultProducts()).thenThrow(ErrorResponseException.class);
+
             mockMvc.perform(get("/defaultProducts"))
                     .andExpect(status().isBadRequest());
 
@@ -111,6 +112,7 @@ public class ControllerTestIT {
 
         try {
             when(apiService.getProductComponents()).thenThrow(ErrorResponseException.class);
+
             mockMvc.perform(get("/productComponents"))
                     .andExpect(status().isBadRequest());
 
@@ -152,6 +154,7 @@ public class ControllerTestIT {
 
         try {
             when(apiService.getProductsFromUser("testUser")).thenThrow(ErrorResponseException.class);
+
             mockMvc.perform(get("/products/testUser"))
                     .andExpect(status().isBadRequest());
 
@@ -188,6 +191,7 @@ public class ControllerTestIT {
         try {
             var id = UUID.randomUUID().toString();
             when(apiService.deleteProduct(id)).thenThrow(ErrorResponseException.class);
+
             mockMvc.perform(delete("/products/"+id))
                     .andExpect(status().isBadRequest());
 
