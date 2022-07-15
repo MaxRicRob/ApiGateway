@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.domain.impl.ProductServiceImpl;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,13 +27,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
+class ProductServiceImplTest {
 
     public static final String TEST = "test";
     public static final String TEST_PRODUCT = "testProduct";
     public static final String TEST_USER = "testUser";
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
     @Mock
     private RabbitTemplate rabbitTemplate;
     @Mock
@@ -45,9 +45,9 @@ class ProductServiceTest {
     @BeforeEach
     void setUp() {
         try {
-            var field = productService.getClass().getDeclaredField("productServiceRoutingKey");
+            var field = productServiceImpl.getClass().getDeclaredField("productServiceRoutingKey");
             field.setAccessible(true);
-            field.set(productService, ROUTING_KEY);
+            field.set(productServiceImpl, ROUTING_KEY);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -58,7 +58,7 @@ class ProductServiceTest {
         when(directExchange.getName()).thenReturn(TEST);
 
         assertThrows(ErrorResponseException.class, () ->
-                productService.getAllComponents());
+                productServiceImpl.getAllComponents());
 
     }
 
@@ -69,7 +69,7 @@ class ProductServiceTest {
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(components)).getBytes()));
 
-        var receivedResponse = productService.getAllComponents();
+        var receivedResponse = productServiceImpl.getAllComponents();
 
         assertThat(receivedResponse.get(0).getName()).isEqualTo("Pineapple");
         assertThat(receivedResponse.get(1).getAwesomeness()).isEqualTo(7);
@@ -82,7 +82,7 @@ class ProductServiceTest {
         when(directExchange.getName()).thenReturn(TEST);
 
         assertThrows(ErrorResponseException.class, () ->
-                productService.getDefaultProducts());
+                productServiceImpl.getDefaultProducts());
 
     }
 
@@ -93,7 +93,7 @@ class ProductServiceTest {
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(defaultProducts)).getBytes()));
 
-        var receivedResponse = productService.getDefaultProducts();
+        var receivedResponse = productServiceImpl.getDefaultProducts();
 
         assertThat(receivedResponse.get(0).getName()).isEqualTo(TEST_PRODUCT);
         assertThat(receivedResponse.get(0).getId()).isEqualTo(0);
@@ -105,7 +105,7 @@ class ProductServiceTest {
         when(directExchange.getName()).thenReturn(TEST);
 
         assertThrows(ErrorResponseException.class, () ->
-                productService.getProductsFromUser(TEST_USER));
+                productServiceImpl.getProductsFromUser(TEST_USER));
     }
 
     @Test
@@ -115,7 +115,7 @@ class ProductServiceTest {
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProducts)).getBytes()));
 
-        var receivedResponse = productService.getProductsFromUser(TEST_USER);
+        var receivedResponse = productServiceImpl.getProductsFromUser(TEST_USER);
 
         assertThat(receivedResponse.get(0).getName()).isEqualTo(TEST_PRODUCT);
         assertThat(receivedResponse.get(0).getUserName()).isEqualTo(TEST_USER);
@@ -127,7 +127,7 @@ class ProductServiceTest {
         when(directExchange.getName()).thenReturn(TEST);
 
         assertThrows(ErrorResponseException.class, () ->
-                productService.deleteProduct("0"));
+                productServiceImpl.deleteProduct("0"));
     }
 
     @Test
@@ -136,7 +136,7 @@ class ProductServiceTest {
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message(("deleted").getBytes()));
 
-        var receivedResponse = productService.deleteProduct("0");
+        var receivedResponse = productServiceImpl.deleteProduct("0");
 
         assertThat(receivedResponse).isEqualTo("deleted");
     }
@@ -146,7 +146,7 @@ class ProductServiceTest {
         when(directExchange.getName()).thenReturn(TEST);
 
         assertThrows(ErrorResponseException.class, () ->
-                productService.createProduct(getTestProduct()));
+                productServiceImpl.createProduct(getTestProduct()));
     }
 
     @Test
@@ -156,7 +156,7 @@ class ProductServiceTest {
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProduct)).getBytes()));
 
-        var receivedResponse = productService.createProduct(userProduct);
+        var receivedResponse = productServiceImpl.createProduct(userProduct);
 
         assertThat(receivedResponse.getName()).isEqualTo(TEST_PRODUCT);
         assertThat(receivedResponse.getUserName()).isEqualTo(TEST_USER);
@@ -168,7 +168,7 @@ class ProductServiceTest {
         when(directExchange.getName()).thenReturn(TEST);
 
         assertThrows(ErrorResponseException.class, () ->
-                productService.updateProduct(getTestProduct()));
+                productServiceImpl.updateProduct(getTestProduct()));
     }
 
     @Test
@@ -178,7 +178,7 @@ class ProductServiceTest {
         when(rabbitTemplate.sendAndReceive(eq(TEST), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(userProduct)).getBytes()));
 
-        var receivedResponse = productService.updateProduct(userProduct);
+        var receivedResponse = productServiceImpl.updateProduct(userProduct);
 
         assertThat(receivedResponse.getName()).isEqualTo(TEST_PRODUCT);
         assertThat(receivedResponse.getUserName()).isEqualTo(TEST_USER);

@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.domain.impl.CurrencyServiceImpl;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
@@ -23,11 +24,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CurrencyServiceTest {
+class CurrencyServiceImplTest {
 
 
     @InjectMocks
-    private CurrencyService currencyService;
+    private CurrencyServiceImpl currencyServiceImpl;
     @Mock
     private RabbitTemplate rabbitTemplate;
     @Mock
@@ -38,9 +39,9 @@ class CurrencyServiceTest {
     @BeforeEach
     void setUp() {
         try {
-            var field = currencyService.getClass().getDeclaredField("currencyServiceRoutingKey");
+            var field = currencyServiceImpl.getClass().getDeclaredField("currencyServiceRoutingKey");
             field.setAccessible(true);
-            field.set(currencyService, ROUTING_KEY);
+            field.set(currencyServiceImpl, ROUTING_KEY);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -53,7 +54,7 @@ class CurrencyServiceTest {
         when(directExchange.getName()).thenReturn("test");
 
         assertThrows(ErrorResponseException.class, () ->
-                currencyService.getCurrency(currencyRequest));
+                currencyServiceImpl.getCurrency(currencyRequest));
 
     }
 
@@ -66,7 +67,7 @@ class CurrencyServiceTest {
         when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(currencyRequest)).getBytes()));
 
-        var receivedResponse = currencyService.getCurrency(currencyRequest);
+        var receivedResponse = currencyServiceImpl.getCurrency(currencyRequest);
 
         assertThat(receivedResponse.getWantedCurrency()).isEqualTo(MXN);
         assertThat(receivedResponse.getTotalPrice()).isEqualTo(200);

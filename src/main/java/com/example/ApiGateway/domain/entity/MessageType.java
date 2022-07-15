@@ -1,4 +1,4 @@
-package com.example.ApiGateway.domain;
+package com.example.ApiGateway.domain.entity;
 
 public enum MessageType {
 

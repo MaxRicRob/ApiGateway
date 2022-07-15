@@ -1,5 +1,6 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.domain.impl.PriceServiceImpl;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
@@ -24,11 +25,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PriceServiceTest {
+class PriceServiceImplTest {
 
 
     @InjectMocks
-    private PriceService priceService;
+    private PriceServiceImpl priceServiceImpl;
     @Mock
     private RabbitTemplate rabbitTemplate;
     @Mock
@@ -39,9 +40,9 @@ class PriceServiceTest {
     @BeforeEach
     void setUp() {
         try {
-            var field = priceService.getClass().getDeclaredField("priceServiceRoutingKey");
+            var field = priceServiceImpl.getClass().getDeclaredField("priceServiceRoutingKey");
             field.setAccessible(true);
-            field.set(priceService, ROUTING_KEY);
+            field.set(priceServiceImpl, ROUTING_KEY);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail();
         }
@@ -53,7 +54,7 @@ class PriceServiceTest {
         when(directExchange.getName()).thenReturn("test");
 
         assertThrows(ErrorResponseException.class, () ->
-                priceService.getPrice(priceRequest));
+                priceServiceImpl.getPrice(priceRequest));
     }
 
     @Test
@@ -65,7 +66,7 @@ class PriceServiceTest {
         when(rabbitTemplate.sendAndReceive(eq("test"), eq(ROUTING_KEY), any(Message.class)))
                 .thenReturn(new Message((new Gson().toJson(priceResponse)).getBytes()));
 
-        var receivedResponse = priceService.getPrice(priceRequest);
+        var receivedResponse = priceServiceImpl.getPrice(priceRequest);
 
         assertThat(receivedResponse.getTotalPrice()).isEqualTo(5000);
     }

@@ -1,9 +1,9 @@
 package com.example.ApiGateway.configuration;
 
 
-import com.example.ApiGateway.domain.CurrencyService;
-import com.example.ApiGateway.domain.PriceService;
-import com.example.ApiGateway.domain.ProductService;
+import com.example.ApiGateway.domain.impl.CurrencyServiceImpl;
+import com.example.ApiGateway.domain.impl.PriceServiceImpl;
+import com.example.ApiGateway.domain.impl.ProductServiceImpl;
 import com.example.ApiGateway.error.ErrorResponseException;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -43,18 +43,18 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public ProductService productService() {
-        return new ProductService();
+    public ProductServiceImpl productService() {
+        return new ProductServiceImpl();
     }
 
     @Bean
-    public PriceService priceService() {
-        return new PriceService();
+    public PriceServiceImpl priceService() {
+        return new PriceServiceImpl();
     }
 
     @Bean
-    public CurrencyService currencyService() {
-        return new CurrencyService();
+    public CurrencyServiceImpl currencyService() {
+        return new CurrencyServiceImpl();
     }
 
     @Bean
