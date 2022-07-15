@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.http.ResponseEntity.status;
+
 
 import java.util.List;
 
@@ -39,84 +42,84 @@ public class Controller {
     @GetMapping("/defaultProducts")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Products from Warehouse.")
-    public List<DefaultProduct> getDefaultProducts() {
+    public ResponseEntity<List<DefaultProduct>> getDefaultProducts() {
 
         log.info("get DefaultProducts Endpoint called");
-        return apiService.getDefaultProducts();
+        return status(OK).body(apiService.getDefaultProducts());
     }
 
     @GetMapping("/productComponents")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Product Components from Warehouse.")
-    public List<ProductComponent> getProductComponents() {
+    public ResponseEntity<List<ProductComponent>> getProductComponents() {
 
         log.info("get ProductComponents Endpoint called");
-        return apiService.getProductComponents();
+        return status(OK).body(apiService.getProductComponents());
     }
 
     @GetMapping("/products/{userName}")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Products from user by username.")
-    public List<Product> getProductsFromUser(
+    public ResponseEntity<List<Product>> getProductsFromUser(
             @Parameter(description = "Name of the user")
             @PathVariable final String userName) {
 
         log.info("get Products from User {} Endpoint called", userName);
-        return apiService.getProductsFromUser(userName);
+        return status(OK).body(apiService.getProductsFromUser(userName));
     }
 
     @DeleteMapping("/products/{id}")
     @ResponseStatus(OK)
     @Operation(summary = "Delete a product by its id.")
-    public String deleteProduct(
+    public ResponseEntity<String> deleteProduct(
             @Parameter(description = "UUID of the product")
             @PathVariable final String id) {
 
         log.info("get delete product with id {} Endpoint called", id);
-        return apiService.deleteProduct(id);
+        return status(OK).body(apiService.deleteProduct(id));
     }
 
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Operation(summary = "Create a product.")
-    public Product createProduct(
+    public ResponseEntity<Product> createProduct(
             @Parameter(description = "Product that needs to be created")
             @RequestBody final Product product) {
 
         log.info("post Product for product {} Endpoint called", product.getName());
-        return apiService.createProduct(product);
+        return status(CREATED).body(apiService.createProduct(product));
     }
 
     @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @Operation(summary = "Update a product.")
-    public Product updateProduct(
+    public ResponseEntity<Product> updateProduct(
             @Parameter(description = "Updated Product")
             @RequestBody final Product product) {
 
         log.info("update Product for product {} Endpoint called", product.getId());
-        return apiService.updateProduct(product);
+        return status(OK).body(apiService.updateProduct(product));
     }
 
     @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product.")
     @ResponseStatus(OK)
-    public PriceResponse getPrice(
+    public ResponseEntity<PriceResponse> getPrice(
             @RequestBody final PriceRequest priceRequest) {
 
         log.info("get priceRequest Endpoint called");
-        return apiService.getFromPriceService(priceRequest);
+        return status(OK).body(apiService.getFromPriceService(priceRequest));
     }
 
     @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product in a specific currency of your choice")
     @ResponseStatus(OK)
-    public CurrencyRequest getCurrency(
+    public ResponseEntity<CurrencyRequest> getCurrency(
             @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
             @RequestBody final CurrencyRequest currencyRequest) {
 
         log.info("get currencyRequest Endpoint called");
-        return apiService.getFromCurrencyService(currencyRequest);
+        return status(OK).body(apiService.getFromCurrencyService(currencyRequest));
     }
 
 }

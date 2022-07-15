@@ -3,6 +3,7 @@ package com.example.ApiGateway.domain;
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.Product;
+import com.example.ApiGateway.domain.impl.ApiServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,10 +13,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class ApiServiceTest {
+class ApiServiceImplTest {
 
     @InjectMocks
-    private ApiService apiService;
+    private ApiServiceImpl apiServiceImpl;
     @Mock
     private ProductService productService;
     @Mock
@@ -31,56 +32,56 @@ class ApiServiceTest {
 
     @Test
     void getDefaultProducts() {
-        apiService.getDefaultProducts();
+        apiServiceImpl.getDefaultProducts();
 
         verify(productService).getDefaultProducts();
     }
 
     @Test
     void getProductComponents() {
-        apiService.getProductComponents();
+        apiServiceImpl.getProductComponents();
 
         verify(productService).getAllComponents();
     }
 
     @Test
     void getProductsFromUser() {
-        apiService.getProductsFromUser("userName");
+        apiServiceImpl.getProductsFromUser("userName");
 
         verify(productService).getProductsFromUser("userName");
     }
 
     @Test
     void deleteProduct() {
-        apiService.deleteProduct("1");
+        apiServiceImpl.deleteProduct("1");
 
         verify(productService).deleteProduct("1");
     }
 
     @Test
     void createProduct() {
-        apiService.createProduct(product);
+        apiServiceImpl.createProduct(product);
 
         verify(productService).createProduct(product);
     }
 
     @Test
     void updateProduct() {
-        apiService.updateProduct(product);
+        apiServiceImpl.updateProduct(product);
 
         verify(productService).updateProduct(product);
     }
 
     @Test
     void getPrice() {
-        apiService.getFromPriceService(priceRequest);
+        apiServiceImpl.getFromPriceService(priceRequest);
 
         verify(priceService).getPrice(priceRequest);
     }
 
     @Test
     void getCurrency() {
-        apiService.getFromCurrencyService(currencyRequest);
+        apiServiceImpl.getFromCurrencyService(currencyRequest);
 
         verify(currencyService).getCurrency(currencyRequest);
     }

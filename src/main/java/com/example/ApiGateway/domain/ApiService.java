@@ -1,68 +1,32 @@
 package com.example.ApiGateway.domain;
 
-
 import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+public interface ApiService {
 
-@Service
-@RequiredArgsConstructor
-public class ApiService {
+    List<DefaultProduct> getDefaultProducts();
 
-    private final ProductService productService;
-    private final PriceService priceService;
-    private final CurrencyService currencyService;
+    List<ProductComponent> getProductComponents();
 
-    public List<DefaultProduct> getDefaultProducts() {
+    List<Product> getProductsFromUser(String userName);
 
-        return productService.getDefaultProducts();
-    }
+    String deleteProduct(String id);
 
-    public List<ProductComponent> getProductComponents() {
+    Product createProduct(Product product);
 
-        return productService.getAllComponents();
-    }
+    Product updateProduct(Product product);
 
-    public List<Product> getProductsFromUser(String userName) {
+    PriceResponse getFromPriceService(PriceRequest priceRequest);
 
-        return productService.getProductsFromUser(userName);
-    }
-
-    public String deleteProduct(String id) {
-
-        return productService.deleteProduct(id);
-    }
-
-    public Product createProduct(Product product) {
-
-        return productService.createProduct(product);
-    }
-
-    public Product updateProduct(Product product) {
-
-        return productService.updateProduct(product);
-    }
-
-    public PriceResponse getFromPriceService(PriceRequest priceRequest) {
-
-        return priceService.getPrice(priceRequest);
-    }
-
-    public CurrencyRequest getFromCurrencyService(CurrencyRequest currencyRequest) {
-
-        return currencyService.getCurrency(currencyRequest);
-    }
+    CurrencyRequest getFromCurrencyService(CurrencyRequest currencyRequest);
 }
-
-
 
 
 

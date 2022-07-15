@@ -1,6 +1,6 @@
 package com.example.ApiGateway.api;
 
-import com.example.ApiGateway.domain.ApiService;
+import com.example.ApiGateway.domain.impl.ApiServiceImpl;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
@@ -31,11 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(Controller.class)
 public class ControllerTestIT {
 
-
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ApiService apiService;
+    private ApiServiceImpl apiServiceImpl;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -47,7 +46,7 @@ public class ControllerTestIT {
                     new DefaultProduct().setName("testProduct1"),
                     new DefaultProduct().setName("testProduct2")
             );
-            when(apiService.getDefaultProducts()).thenReturn(defaultProducts);
+            when(apiServiceImpl.getDefaultProducts()).thenReturn(defaultProducts);
 
             var mockMvcResult = mockMvc.perform(get("/defaultProducts"))
                     .andExpect(status().isOk())
@@ -58,7 +57,7 @@ public class ControllerTestIT {
             assertThat(actualResults.size()).isEqualTo(2);
             assertThat(actualResults.get(0).getName()).isEqualTo("testProduct1");
             assertThat(actualResults.get(1).getName()).isEqualTo("testProduct2");
-            verify(apiService).getDefaultProducts();
+            verify(apiServiceImpl).getDefaultProducts();
 
         } catch (Exception e) {
             fail();
@@ -69,12 +68,12 @@ public class ControllerTestIT {
     void get_default_products_status_bad_request() {
 
         try {
-            when(apiService.getDefaultProducts()).thenThrow(ErrorResponseException.class);
+            when(apiServiceImpl.getDefaultProducts()).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(get("/defaultProducts"))
                     .andExpect(status().isBadRequest());
 
-            verify(apiService).getDefaultProducts();
+            verify(apiServiceImpl).getDefaultProducts();
 
         } catch (Exception e) {
             fail();
@@ -89,7 +88,7 @@ public class ControllerTestIT {
                     new ProductComponent().setName("testComponent1"),
                     new ProductComponent().setName("testComponent2")
             );
-            when(apiService.getProductComponents()).thenReturn(components);
+            when(apiServiceImpl.getProductComponents()).thenReturn(components);
 
             var mockMvcResult = mockMvc.perform(get("/productComponents"))
                     .andExpect(status().isOk())
@@ -100,7 +99,7 @@ public class ControllerTestIT {
             assertThat(actualResults.size()).isEqualTo(2);
             assertThat(actualResults.get(0).getName()).isEqualTo("testComponent1");
             assertThat(actualResults.get(1).getName()).isEqualTo("testComponent2");
-            verify(apiService).getProductComponents();
+            verify(apiServiceImpl).getProductComponents();
 
         } catch (Exception e) {
             fail();
@@ -111,12 +110,12 @@ public class ControllerTestIT {
     void get_components_status_bad_request() {
 
         try {
-            when(apiService.getProductComponents()).thenThrow(ErrorResponseException.class);
+            when(apiServiceImpl.getProductComponents()).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(get("/productComponents"))
                     .andExpect(status().isBadRequest());
 
-            verify(apiService).getProductComponents();
+            verify(apiServiceImpl).getProductComponents();
 
         } catch (Exception e) {
             fail();
@@ -131,7 +130,7 @@ public class ControllerTestIT {
                     new Product().setName("testProduct1"),
                     new Product().setName("testProduct2")
             );
-            when(apiService.getProductsFromUser("testUser")).thenReturn(products);
+            when(apiServiceImpl.getProductsFromUser("testUser")).thenReturn(products);
 
             var mockMvcResult = mockMvc.perform(get("/products/testUser"))
                     .andExpect(status().isOk())
@@ -142,7 +141,7 @@ public class ControllerTestIT {
             assertThat(actualResults.size()).isEqualTo(2);
             assertThat(actualResults.get(0).getName()).isEqualTo("testProduct1");
             assertThat(actualResults.get(1).getName()).isEqualTo("testProduct2");
-            verify(apiService).getProductsFromUser(eq("testUser"));
+            verify(apiServiceImpl).getProductsFromUser(eq("testUser"));
 
         } catch (Exception e) {
             fail();
@@ -153,12 +152,12 @@ public class ControllerTestIT {
     void get_products_from_user_status_bad_request() {
 
         try {
-            when(apiService.getProductsFromUser("testUser")).thenThrow(ErrorResponseException.class);
+            when(apiServiceImpl.getProductsFromUser("testUser")).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(get("/products/testUser"))
                     .andExpect(status().isBadRequest());
 
-            verify(apiService).getProductsFromUser(eq("testUser"));
+            verify(apiServiceImpl).getProductsFromUser(eq("testUser"));
 
         } catch (Exception e) {
             fail();
@@ -170,7 +169,7 @@ public class ControllerTestIT {
 
         try {
             var id = UUID.randomUUID().toString();
-            when(apiService.deleteProduct(id)).thenReturn("deleted");
+            when(apiServiceImpl.deleteProduct(id)).thenReturn("deleted");
 
             var mockMvcResult = mockMvc.perform(delete("/products/"+id))
                     .andExpect(status().isOk())
@@ -178,7 +177,7 @@ public class ControllerTestIT {
 
             String actualResult = mockMvcResult.getResponse().getContentAsString();
             assertThat(actualResult).isEqualTo("deleted");
-            verify(apiService).deleteProduct(eq(id));
+            verify(apiServiceImpl).deleteProduct(eq(id));
 
         } catch (Exception e) {
             fail();
@@ -190,12 +189,12 @@ public class ControllerTestIT {
 
         try {
             var id = UUID.randomUUID().toString();
-            when(apiService.deleteProduct(id)).thenThrow(ErrorResponseException.class);
+            when(apiServiceImpl.deleteProduct(id)).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(delete("/products/"+id))
                     .andExpect(status().isBadRequest());
 
-            verify(apiService).deleteProduct(eq(id));
+            verify(apiServiceImpl).deleteProduct(eq(id));
         } catch (Exception e) {
             fail();
         }
