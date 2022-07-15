@@ -1,10 +1,10 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.impl.ProductServiceImpl;
-import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.domain.impl.ProductServiceImpl;
+import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,15 +32,13 @@ class ProductServiceImplTest {
     public static final String TEST = "test";
     public static final String TEST_PRODUCT = "testProduct";
     public static final String TEST_USER = "testUser";
+    public static final String ROUTING_KEY = "routingKey";
     @InjectMocks
     private ProductServiceImpl productServiceImpl;
     @Mock
     private RabbitTemplate rabbitTemplate;
     @Mock
     private DirectExchange directExchange;
-
-    public static final String ROUTING_KEY = "routingKey";
-
 
     @BeforeEach
     void setUp() {

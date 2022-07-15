@@ -1,9 +1,9 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.impl.PriceServiceImpl;
-import com.example.ApiGateway.error.ErrorResponseException;
 import com.example.ApiGateway.domain.entity.PriceRequest;
 import com.example.ApiGateway.domain.entity.PriceResponse;
+import com.example.ApiGateway.domain.impl.PriceServiceImpl;
+import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,14 +28,13 @@ import static org.mockito.Mockito.when;
 class PriceServiceImplTest {
 
 
+    public static final String ROUTING_KEY = "routingKey";
     @InjectMocks
     private PriceServiceImpl priceServiceImpl;
     @Mock
     private RabbitTemplate rabbitTemplate;
     @Mock
     private DirectExchange directExchange;
-
-    public static final String ROUTING_KEY = "routingKey";
 
     @BeforeEach
     void setUp() {
@@ -74,6 +73,6 @@ class PriceServiceImplTest {
     private PriceRequest getPriceRequest() {
 
         return new PriceRequest()
-                .setPrices(List.of(500L, 1500L , 3000L));
+                .setPrices(List.of(500L, 1500L, 3000L));
     }
 }

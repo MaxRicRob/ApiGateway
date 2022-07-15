@@ -1,7 +1,10 @@
 package com.example.ApiGateway.api;
 
-import com.example.ApiGateway.domain.impl.ApiServiceImpl;
+import com.example.ApiGateway.domain.ApiService;
+import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.entity.DefaultProduct;
+import com.example.ApiGateway.domain.entity.PriceRequest;
+import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.example.ApiGateway.domain.entity.Product;
 import com.example.ApiGateway.domain.entity.ProductComponent;
 import com.example.ApiGateway.error.ErrorResponseException;
@@ -18,46 +21,51 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.ApiGateway.domain.entity.Currency.MXN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(Controller.class)
 public class ControllerTestIT {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ApiServiceImpl apiServiceImpl;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
+    private ApiService apiService;
 
     @Test
     void get_default_products_status_ok() {
 
         try {
-            List<DefaultProduct> defaultProducts = List.of(
+            var defaultProducts = List.of(
                     new DefaultProduct().setName("testProduct1"),
                     new DefaultProduct().setName("testProduct2")
             );
-            when(apiServiceImpl.getDefaultProducts()).thenReturn(defaultProducts);
+            when(apiService.getDefaultProducts()).thenReturn(defaultProducts);
 
             var mockMvcResult = mockMvc.perform(get("/defaultProducts"))
                     .andExpect(status().isOk())
                     .andReturn();
 
             List<DefaultProduct> actualResults =
-                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
             assertThat(actualResults.size()).isEqualTo(2);
             assertThat(actualResults.get(0).getName()).isEqualTo("testProduct1");
             assertThat(actualResults.get(1).getName()).isEqualTo("testProduct2");
-            verify(apiServiceImpl).getDefaultProducts();
+            verify(apiService).getDefaultProducts();
 
         } catch (Exception e) {
             fail();
@@ -68,12 +76,12 @@ public class ControllerTestIT {
     void get_default_products_status_bad_request() {
 
         try {
-            when(apiServiceImpl.getDefaultProducts()).thenThrow(ErrorResponseException.class);
+            when(apiService.getDefaultProducts()).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(get("/defaultProducts"))
                     .andExpect(status().isBadRequest());
 
-            verify(apiServiceImpl).getDefaultProducts();
+            verify(apiService).getDefaultProducts();
 
         } catch (Exception e) {
             fail();
@@ -84,22 +92,23 @@ public class ControllerTestIT {
     void get_components_status_ok() {
 
         try {
-            List<ProductComponent> components = List.of(
+            var components = List.of(
                     new ProductComponent().setName("testComponent1"),
                     new ProductComponent().setName("testComponent2")
             );
-            when(apiServiceImpl.getProductComponents()).thenReturn(components);
+            when(apiService.getProductComponents()).thenReturn(components);
 
             var mockMvcResult = mockMvc.perform(get("/productComponents"))
                     .andExpect(status().isOk())
                     .andReturn();
 
             List<ProductComponent> actualResults =
-                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
             assertThat(actualResults.size()).isEqualTo(2);
             assertThat(actualResults.get(0).getName()).isEqualTo("testComponent1");
             assertThat(actualResults.get(1).getName()).isEqualTo("testComponent2");
-            verify(apiServiceImpl).getProductComponents();
+            verify(apiService).getProductComponents();
 
         } catch (Exception e) {
             fail();
@@ -110,12 +119,12 @@ public class ControllerTestIT {
     void get_components_status_bad_request() {
 
         try {
-            when(apiServiceImpl.getProductComponents()).thenThrow(ErrorResponseException.class);
+            when(apiService.getProductComponents()).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(get("/productComponents"))
                     .andExpect(status().isBadRequest());
 
-            verify(apiServiceImpl).getProductComponents();
+            verify(apiService).getProductComponents();
 
         } catch (Exception e) {
             fail();
@@ -126,22 +135,23 @@ public class ControllerTestIT {
     void get_products_from_user_status_ok() {
 
         try {
-            List<Product> products = List.of(
+            var products = List.of(
                     new Product().setName("testProduct1"),
                     new Product().setName("testProduct2")
             );
-            when(apiServiceImpl.getProductsFromUser("testUser")).thenReturn(products);
+            when(apiService.getProductsFromUser("testUser")).thenReturn(products);
 
             var mockMvcResult = mockMvc.perform(get("/products/testUser"))
                     .andExpect(status().isOk())
                     .andReturn();
 
             List<Product> actualResults =
-                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
             assertThat(actualResults.size()).isEqualTo(2);
             assertThat(actualResults.get(0).getName()).isEqualTo("testProduct1");
             assertThat(actualResults.get(1).getName()).isEqualTo("testProduct2");
-            verify(apiServiceImpl).getProductsFromUser(eq("testUser"));
+            verify(apiService).getProductsFromUser(eq("testUser"));
 
         } catch (Exception e) {
             fail();
@@ -152,12 +162,12 @@ public class ControllerTestIT {
     void get_products_from_user_status_bad_request() {
 
         try {
-            when(apiServiceImpl.getProductsFromUser("testUser")).thenThrow(ErrorResponseException.class);
+            when(apiService.getProductsFromUser("testUser")).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(get("/products/testUser"))
                     .andExpect(status().isBadRequest());
 
-            verify(apiServiceImpl).getProductsFromUser(eq("testUser"));
+            verify(apiService).getProductsFromUser(eq("testUser"));
 
         } catch (Exception e) {
             fail();
@@ -169,15 +179,15 @@ public class ControllerTestIT {
 
         try {
             var id = UUID.randomUUID().toString();
-            when(apiServiceImpl.deleteProduct(id)).thenReturn("deleted");
+            when(apiService.deleteProduct(id)).thenReturn("deleted");
 
-            var mockMvcResult = mockMvc.perform(delete("/products/"+id))
+            var mockMvcResult = mockMvc.perform(delete("/products/" + id))
                     .andExpect(status().isOk())
                     .andReturn();
 
             String actualResult = mockMvcResult.getResponse().getContentAsString();
             assertThat(actualResult).isEqualTo("deleted");
-            verify(apiServiceImpl).deleteProduct(eq(id));
+            verify(apiService).deleteProduct(eq(id));
 
         } catch (Exception e) {
             fail();
@@ -189,18 +199,218 @@ public class ControllerTestIT {
 
         try {
             var id = UUID.randomUUID().toString();
-            when(apiServiceImpl.deleteProduct(id)).thenThrow(ErrorResponseException.class);
+            when(apiService.deleteProduct(id)).thenThrow(ErrorResponseException.class);
 
-            mockMvc.perform(delete("/products/"+id))
+            mockMvc.perform(delete("/products/" + id))
                     .andExpect(status().isBadRequest());
 
-            verify(apiServiceImpl).deleteProduct(eq(id));
+            verify(apiService).deleteProduct(eq(id));
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void create_status_created() {
+
+        try {
+            var product = getTestProduct();
+            when(apiService.createProduct(any(Product.class))).thenReturn(product);
+
+            var mockMvcResult = mockMvc.perform(post("/products/")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(product)))
+                    .andExpect(status().isCreated())
+                    .andReturn();
+
+            Product actualResult =
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
+            assertThat(actualResult.getName()).isEqualTo("test");
+            assertThat(actualResult.getUserName()).isEqualTo("test");
+            assertThat(actualResult.getComponents().get(0).getName()).isEqualTo("test");
+            verify(apiService).createProduct(any(Product.class));
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void create_status_bad_request() {
+
+        try {
+            when(apiService.createProduct(any(Product.class))).thenThrow(ErrorResponseException.class);
+
+            mockMvc.perform(post("/products/")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(getTestProduct())))
+                    .andExpect(status().isBadRequest());
+
+            verify(apiService).createProduct(any(Product.class));
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void update_status_ok() {
+
+        try {
+            var product = getTestProduct();
+            when(apiService.updateProduct(any(Product.class))).thenReturn(product);
+
+            var mockMvcResult = mockMvc.perform(put("/products/")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(product)))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            Product actualResult =
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
+            assertThat(actualResult.getName()).isEqualTo("test");
+            assertThat(actualResult.getUserName()).isEqualTo("test");
+            assertThat(actualResult.getComponents().get(0).getName()).isEqualTo("test");
+            verify(apiService).updateProduct(any(Product.class));
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void update_status_bad_request() {
+
+        try {
+            when(apiService.updateProduct(any(Product.class))).thenThrow(ErrorResponseException.class);
+
+            mockMvc.perform(put("/products/")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(getTestProduct())))
+                    .andExpect(status().isBadRequest());
+
+            verify(apiService).updateProduct(any(Product.class));
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void get_price_request_status_ok() {
+
+        try {
+            var priceResponse = new PriceResponse()
+                    .setTotalPrice(100);
+            when(apiService.getFromPriceService(any(PriceRequest.class))).thenReturn(priceResponse);
+
+            var mockMvcResult = mockMvc.perform(get("/priceRequest")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(getPriceRequest())))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            PriceResponse actualResult =
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
+            assertThat(actualResult.getTotalPrice()).isEqualTo(100);
+            verify(apiService).getFromPriceService(any(PriceRequest.class));
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void get_price_request_status_bad_request() {
+
+        try {
+            when(apiService.getFromPriceService(any(PriceRequest.class)))
+                    .thenThrow(ErrorResponseException.class);
+
+            mockMvc.perform(get("/priceRequest")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(getPriceRequest())))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            verify(apiService).getFromPriceService(any(PriceRequest.class));
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    void get_currency_request_status_ok() {
+
+        try {
+            var currencyRequest = getCurrencyRequest();
+            when(apiService.getFromCurrencyService(any(CurrencyRequest.class))).thenReturn(currencyRequest);
+
+            var mockMvcResult = mockMvc.perform(get("/currencyRequest")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(currencyRequest)))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            CurrencyRequest actualResult =
+                    objectMapper.readValue(mockMvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
+            assertThat(actualResult.getTotalPrice()).isEqualTo(100);
+            assertThat(actualResult.getWantedCurrency()).isEqualTo(MXN);
+            verify(apiService).getFromCurrencyService(any(CurrencyRequest.class));
+
         } catch (Exception e) {
             fail();
         }
     }
 
 
+    @Test
+    void get_currency_request_status_bad_request() {
 
+        try {
+            when(apiService.getFromCurrencyService(any(CurrencyRequest.class)))
+                    .thenThrow(ErrorResponseException.class);
+
+            mockMvc.perform(get("/currencyRequest")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(getCurrencyRequest())))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            verify(apiService).getFromCurrencyService(any(CurrencyRequest.class));
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+
+    private Product getTestProduct() {
+        return new Product()
+                .setName("test")
+                .setUserName("test")
+                .setComponents(
+                        List.of(
+                                new ProductComponent()
+                                        .setName("test")
+                        )
+                );
+    }
+
+    private PriceRequest getPriceRequest() {
+        return new PriceRequest()
+                .setPrices(
+                        List.of(10L, 90L)
+                );
+    }
+
+    private CurrencyRequest getCurrencyRequest() {
+        return new CurrencyRequest()
+                .setWantedCurrency(MXN)
+                .setTotalPrice(100);
+    }
 
 }

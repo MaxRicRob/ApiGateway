@@ -1,8 +1,8 @@
 package com.example.ApiGateway.domain;
 
+import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.example.ApiGateway.domain.impl.CurrencyServiceImpl;
 import com.example.ApiGateway.error.ErrorResponseException;
-import com.example.ApiGateway.domain.entity.CurrencyRequest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,7 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-
-import static com.example.ApiGateway.domain.entity.Currency.*;
+import static com.example.ApiGateway.domain.entity.Currency.MXN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -27,14 +26,13 @@ import static org.mockito.Mockito.when;
 class CurrencyServiceImplTest {
 
 
+    public static final String ROUTING_KEY = "routingKey";
     @InjectMocks
     private CurrencyServiceImpl currencyServiceImpl;
     @Mock
     private RabbitTemplate rabbitTemplate;
     @Mock
     private DirectExchange directExchange;
-
-    public static final String ROUTING_KEY = "routingKey";
 
     @BeforeEach
     void setUp() {
