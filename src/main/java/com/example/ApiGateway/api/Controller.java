@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -44,7 +45,8 @@ public class Controller {
     public ResponseEntity<List<DefaultProduct>> getDefaultProducts() {
 
         log.info("get DefaultProducts Endpoint called");
-        return status(OK).body(apiService.getDefaultProducts());
+        //return status(OK).body(apiService.getDefaultProducts());
+        return status(OK).body(null);
     }
 
     @GetMapping("/productComponents")
@@ -53,7 +55,8 @@ public class Controller {
     public ResponseEntity<List<ProductComponent>> getProductComponents() {
 
         log.info("get ProductComponents Endpoint called");
-        return status(OK).body(apiService.getProductComponents());
+//        return status(OK).body(apiService.getProductComponents());
+        return status(OK).body(null);
     }
 
     @GetMapping("/products/{userName}")
@@ -64,7 +67,8 @@ public class Controller {
             @PathVariable final String userName) {
 
         log.info("get Products from User {} Endpoint called", userName);
-        return status(OK).body(apiService.getProductsFromUser(userName));
+//        return status(OK).body(apiService.getProductsFromUser(userName));
+        return status(OK).body(null);
     }
 
     @DeleteMapping("/products/{id}")

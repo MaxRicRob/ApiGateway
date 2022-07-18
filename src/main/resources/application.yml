@@ -19,3 +19,12 @@ routing-keys:
 
 xchange:
   name: exchange.rpc
+
+#keycloak
+keycloak:
+  auth-server-url: http://localhost:8080/
+  public-client: true
+  realm: KBE_Authentication
+  resource: fruits
+  ssl-required: external
+  confidential-port: 0
