@@ -100,7 +100,7 @@ public class Controller {
         return status(OK).body(apiService.updateProduct(product));
     }
 
-    @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product.")
     @ResponseStatus(OK)
     public ResponseEntity<PriceResponse> getPrice(
@@ -110,7 +110,7 @@ public class Controller {
         return status(OK).body(apiService.getFromPriceService(priceRequest));
     }
 
-    @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product in a specific currency of your choice")
     @ResponseStatus(OK)
     public ResponseEntity<CurrencyRequest> getCurrency(
