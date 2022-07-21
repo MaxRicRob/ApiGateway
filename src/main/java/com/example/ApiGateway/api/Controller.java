@@ -114,7 +114,7 @@ public class Controller {
     @Operation(summary = "Get the price for a product in a specific currency of your choice")
     @ResponseStatus(OK)
     public ResponseEntity<CurrencyRequest> getCurrency(
-            @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
+            @Parameter(description = "allowed currencies: EUR, MXN, USD, CAD, YEN, PND")
             @RequestBody final CurrencyRequest currencyRequest) {
 
         log.info("get currencyRequest Endpoint called");
