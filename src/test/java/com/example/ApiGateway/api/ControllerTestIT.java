@@ -1,12 +1,12 @@
 package com.example.ApiGateway.api;
 
 import com.example.ApiGateway.domain.ApiService;
-import com.example.ApiGateway.domain.entity.CurrencyRequest;
-import com.example.ApiGateway.domain.entity.DefaultProduct;
-import com.example.ApiGateway.domain.entity.PriceRequest;
-import com.example.ApiGateway.domain.entity.PriceResponse;
-import com.example.ApiGateway.domain.entity.Product;
-import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.ApiGateway.domain.entity.Currency.MXN;
+import static com.example.ApiGateway.entity.Currency.MXN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;

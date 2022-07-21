@@ -2,12 +2,12 @@ package com.example.ApiGateway.api;
 
 
 import com.example.ApiGateway.domain.ApiService;
-import com.example.ApiGateway.domain.entity.CurrencyRequest;
-import com.example.ApiGateway.domain.entity.DefaultProduct;
-import com.example.ApiGateway.domain.entity.PriceRequest;
-import com.example.ApiGateway.domain.entity.PriceResponse;
-import com.example.ApiGateway.domain.entity.Product;
-import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;

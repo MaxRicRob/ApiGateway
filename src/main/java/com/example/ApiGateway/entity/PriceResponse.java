@@ -1,4 +1,4 @@
-package com.example.ApiGateway.domain.entity;
+package com.example.ApiGateway.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,17 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class DefaultProduct {
+public class PriceResponse {
 
-    private int id;
-    private String name;
-    private List<ProductComponent> components;
+    private long totalPrice;
 
 }

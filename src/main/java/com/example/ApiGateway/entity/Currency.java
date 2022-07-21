@@ -1,4 +1,4 @@
-package com.example.ApiGateway.domain.entity;
+package com.example.ApiGateway.entity;
 
 public enum Currency {
 

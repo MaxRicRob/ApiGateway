@@ -1,9 +1,9 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.entity.DefaultProduct;
-import com.example.ApiGateway.domain.entity.Product;
-import com.example.ApiGateway.domain.entity.ProductComponent;
 import com.example.ApiGateway.domain.impl.ProductServiceImpl;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;

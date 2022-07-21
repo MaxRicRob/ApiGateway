@@ -1,4 +1,4 @@
-package com.example.ApiGateway.domain.entity;
+package com.example.ApiGateway.entity;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
