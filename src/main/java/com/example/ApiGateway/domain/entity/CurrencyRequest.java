@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class CurrencyRequest {
 
     private long totalPrice;
-    @Schema(allowableValues = {"EURO", "MXN", "USD", "CAD", "YEN", "POUND"})
+    @Schema(allowableValues = {"EUR", "MXN", "USD", "CAD", "YEN", "PND"})
     private Currency wantedCurrency;
 
 }
