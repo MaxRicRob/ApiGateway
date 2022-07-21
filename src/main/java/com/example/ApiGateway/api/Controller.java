@@ -111,7 +111,7 @@ public class Controller {
     }
 
     @PostMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Get the price for a product in a specific currency of your choice")
+    @Operation(summary = "Get the price for a product or component in a specific currency of your choice")
     @ResponseStatus(OK)
     public ResponseEntity<CurrencyRequest> getCurrency(
             @Parameter(description = "allowed currencies: EUR, MXN, USD, CAD, YEN, PND")
