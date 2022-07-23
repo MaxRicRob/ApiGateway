@@ -2,12 +2,12 @@ package com.example.ApiGateway.api;
 
 
 import com.example.ApiGateway.domain.ApiService;
-import com.example.ApiGateway.domain.entity.CurrencyRequest;
-import com.example.ApiGateway.domain.entity.DefaultProduct;
-import com.example.ApiGateway.domain.entity.PriceRequest;
-import com.example.ApiGateway.domain.entity.PriceResponse;
-import com.example.ApiGateway.domain.entity.Product;
-import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -104,7 +104,7 @@ public class Controller {
         return status(OK).body(apiService.updateProduct(product));
     }
 
-    @GetMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product.")
     @ResponseStatus(OK)
     public ResponseEntity<PriceResponse> getPrice(
@@ -114,11 +114,11 @@ public class Controller {
         return status(OK).body(apiService.getFromPriceService(priceRequest));
     }
 
-    @GetMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Get the price for a product in a specific currency of your choice")
+    @PostMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get the price for a product or component in a specific currency of your choice")
     @ResponseStatus(OK)
     public ResponseEntity<CurrencyRequest> getCurrency(
-            @Parameter(description = "allowed currencies: EURO, MXN, USD, CAD, YEN, POUND")
+            @Parameter(description = "allowed currencies: EUR, MXN, USD, CAD, YEN, PND")
             @RequestBody final CurrencyRequest currencyRequest) {
 
         log.info("get currencyRequest Endpoint called");

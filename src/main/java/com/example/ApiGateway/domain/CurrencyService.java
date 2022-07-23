@@ -1,6 +1,6 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.CurrencyRequest;
 
 public interface CurrencyService {
 

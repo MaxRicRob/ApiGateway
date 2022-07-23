@@ -1,7 +1,7 @@
 package com.example.ApiGateway.domain.impl;
 
 import com.example.ApiGateway.domain.CurrencyService;
-import com.example.ApiGateway.domain.entity.CurrencyRequest;
+import com.example.ApiGateway.entity.CurrencyRequest;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.example.ApiGateway.domain.entity.MessageType.CURRENCY_REQUEST;
+import static com.example.ApiGateway.entity.MessageType.CURRENCY_REQUEST;
 
 @Slf4j
 @RequiredArgsConstructor

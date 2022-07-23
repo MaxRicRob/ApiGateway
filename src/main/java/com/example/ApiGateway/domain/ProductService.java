@@ -1,8 +1,8 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.entity.DefaultProduct;
-import com.example.ApiGateway.domain.entity.Product;
-import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 
 import java.util.List;
 

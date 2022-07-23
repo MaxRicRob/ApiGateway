@@ -1,8 +1,8 @@
 package com.example.ApiGateway.domain;
 
-import com.example.ApiGateway.domain.entity.PriceRequest;
-import com.example.ApiGateway.domain.entity.PriceResponse;
 import com.example.ApiGateway.domain.impl.PriceServiceImpl;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;

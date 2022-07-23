@@ -1,8 +1,8 @@
 package com.example.ApiGateway.domain.impl;
 
 import com.example.ApiGateway.domain.PriceService;
-import com.example.ApiGateway.domain.entity.PriceRequest;
-import com.example.ApiGateway.domain.entity.PriceResponse;
+import com.example.ApiGateway.entity.PriceRequest;
+import com.example.ApiGateway.entity.PriceResponse;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.example.ApiGateway.domain.entity.MessageType.PRICE_REQUEST;
+import static com.example.ApiGateway.entity.MessageType.PRICE_REQUEST;
 
 @RequiredArgsConstructor
 @Slf4j

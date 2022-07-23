@@ -2,9 +2,9 @@ package com.example.ApiGateway.domain.impl;
 
 
 import com.example.ApiGateway.domain.ProductService;
-import com.example.ApiGateway.domain.entity.DefaultProduct;
-import com.example.ApiGateway.domain.entity.Product;
-import com.example.ApiGateway.domain.entity.ProductComponent;
+import com.example.ApiGateway.entity.DefaultProduct;
+import com.example.ApiGateway.entity.Product;
+import com.example.ApiGateway.entity.ProductComponent;
 import com.example.ApiGateway.error.ErrorResponseException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,12 +19,12 @@ import org.springframework.beans.factory.annotation.Value;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static com.example.ApiGateway.domain.entity.MessageType.CREATE_PRODUCT;
-import static com.example.ApiGateway.domain.entity.MessageType.DELETE_PRODUCT;
-import static com.example.ApiGateway.domain.entity.MessageType.GET_COMPONENTS;
-import static com.example.ApiGateway.domain.entity.MessageType.GET_DEFAULT_PRODUCTS;
-import static com.example.ApiGateway.domain.entity.MessageType.GET_PRODUCTS_FROM_USER;
-import static com.example.ApiGateway.domain.entity.MessageType.UPDATE_PRODUCT;
+import static com.example.ApiGateway.entity.MessageType.CREATE_PRODUCT;
+import static com.example.ApiGateway.entity.MessageType.DELETE_PRODUCT;
+import static com.example.ApiGateway.entity.MessageType.GET_COMPONENTS;
+import static com.example.ApiGateway.entity.MessageType.GET_DEFAULT_PRODUCTS;
+import static com.example.ApiGateway.entity.MessageType.GET_PRODUCTS_FROM_USER;
+import static com.example.ApiGateway.entity.MessageType.UPDATE_PRODUCT;
 
 @RequiredArgsConstructor
 @Slf4j
