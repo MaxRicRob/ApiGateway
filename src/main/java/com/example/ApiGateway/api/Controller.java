@@ -31,7 +31,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
 
-@PreAuthorize("hasRole('user')")
 @CrossOrigin
 @Slf4j
 @RequiredArgsConstructor

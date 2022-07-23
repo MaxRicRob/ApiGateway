@@ -20,11 +20,4 @@ routing-keys:
 xchange:
   name: exchange.rpc
 
-#keycloak
-keycloak:
-  auth-server-url: http://192.168.0.53:8080/auth/
-  public-client: true
-  realm: SpringBootKeycloak
-  resource: login-app
-  ssl-required: external
-  confidential-port: 0
+
