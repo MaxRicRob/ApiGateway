@@ -1,4 +1,4 @@
-package com.example.ApiGateway.security;
+package com.example.ApiGateway.configuration;
 
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -19,15 +19,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @KeycloakConfiguration
 class ApplicationSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
-    // Submits the KeycloakAuthenticationProvider to the AuthenticationManager
+
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
-    // Specifies the session authentication strategy
     @Bean
     @Override
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
@@ -39,9 +38,9 @@ class ApplicationSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http
                 .authorizeRequests()
-                .antMatchers("index","/css/*", "/js/*").permitAll()
-                .antMatchers("/defaultProducts", "/productComponents")
-                .hasRole("user")
+                .antMatchers("index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/login")
+                .hasAnyRole("user")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -51,9 +50,7 @@ class ApplicationSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "remember-me")
-                .logoutSuccessUrl("/login")
-        ;
+                .logoutSuccessUrl("/login");
     }
-
 
 }

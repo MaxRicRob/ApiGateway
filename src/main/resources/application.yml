@@ -22,9 +22,9 @@ xchange:
 
 #keycloak
 keycloak:
-  auth-server-url: http://localhost:8080/
+  auth-server-url: http://192.168.0.53:8080/auth/
   public-client: true
-  realm: KBE_Authentication
-  resource: fruits
+  realm: SpringBootKeycloak
+  resource: login-app
   ssl-required: external
   confidential-port: 0

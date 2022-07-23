@@ -1,4 +1,4 @@
-package com.example.ApiGateway.security;
+package com.example.ApiGateway.configuration;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.context.annotation.Bean;
