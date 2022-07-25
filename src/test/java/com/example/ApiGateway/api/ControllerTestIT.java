@@ -1,4 +1,3 @@
-/*
 package com.example.ApiGateway.api;
 
 import com.example.ApiGateway.domain.ApiService;
@@ -14,8 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -37,16 +41,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(Controller.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 public class ControllerTestIT {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+    private final HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+    private final CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
+
     @Autowired
     private MockMvc mockMvc;
     @MockBean
     private ApiService apiService;
 
     @Test
+    @WithMockUser(roles = "user")
     void get_default_products_status_ok() {
 
         try {
@@ -74,6 +84,7 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void get_default_products_status_bad_request() {
 
         try {
@@ -90,6 +101,7 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void get_components_status_ok() {
 
         try {
@@ -117,6 +129,7 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void get_components_status_bad_request() {
 
         try {
@@ -133,6 +146,7 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void get_products_from_user_status_ok() {
 
         try {
@@ -160,6 +174,7 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void get_products_from_user_status_bad_request() {
 
         try {
@@ -176,13 +191,16 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void delete_status_ok() {
 
         try {
             var id = UUID.randomUUID().toString();
             when(apiService.deleteProduct(id)).thenReturn("deleted");
 
-            var mockMvcResult = mockMvc.perform(delete("/products/" + id))
+            var mockMvcResult = mockMvc.perform(delete("/products/" + id)
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -196,13 +214,16 @@ public class ControllerTestIT {
     }
 
     @Test
+    @WithMockUser(roles = "user")
     void delete_status_bad_request() {
 
         try {
             var id = UUID.randomUUID().toString();
             when(apiService.deleteProduct(id)).thenThrow(ErrorResponseException.class);
 
-            mockMvc.perform(delete("/products/" + id))
+            mockMvc.perform(delete("/products/" + id)
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isBadRequest());
 
             verify(apiService).deleteProduct(eq(id));
@@ -212,7 +233,8 @@ public class ControllerTestIT {
     }
 
     @Test
-    void create_status_created() {
+    @WithMockUser(roles = "user")
+    void post_product_status_created() {
 
         try {
             var product = getTestProduct();
@@ -220,7 +242,9 @@ public class ControllerTestIT {
 
             var mockMvcResult = mockMvc.perform(post("/products/")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(product)))
+                            .content(objectMapper.writeValueAsString(product))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isCreated())
                     .andReturn();
 
@@ -238,14 +262,17 @@ public class ControllerTestIT {
     }
 
     @Test
-    void create_status_bad_request() {
+    @WithMockUser(roles = "user")
+    void post_product_status_bad_request() {
 
         try {
             when(apiService.createProduct(any(Product.class))).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(post("/products/")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(getTestProduct())))
+                            .content(objectMapper.writeValueAsString(getTestProduct()))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isBadRequest());
 
             verify(apiService).createProduct(any(Product.class));
@@ -255,7 +282,8 @@ public class ControllerTestIT {
     }
 
     @Test
-    void update_status_ok() {
+    @WithMockUser(roles = "user")
+    void put_product_status_ok() {
 
         try {
             var product = getTestProduct();
@@ -263,7 +291,9 @@ public class ControllerTestIT {
 
             var mockMvcResult = mockMvc.perform(put("/products/")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(product)))
+                            .content(objectMapper.writeValueAsString(product))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -281,14 +311,17 @@ public class ControllerTestIT {
     }
 
     @Test
-    void update_status_bad_request() {
+    @WithMockUser(roles = "user")
+    void put_product_status_bad_request() {
 
         try {
             when(apiService.updateProduct(any(Product.class))).thenThrow(ErrorResponseException.class);
 
             mockMvc.perform(put("/products/")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(getTestProduct())))
+                            .content(objectMapper.writeValueAsString(getTestProduct()))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isBadRequest());
 
             verify(apiService).updateProduct(any(Product.class));
@@ -298,7 +331,8 @@ public class ControllerTestIT {
     }
 
     @Test
-    void get_price_request_status_ok() {
+    @WithMockUser(roles = "user")
+    void post_price_request_status_ok() {
 
         try {
             var priceResponse = new PriceResponse()
@@ -307,7 +341,9 @@ public class ControllerTestIT {
 
             var mockMvcResult = mockMvc.perform(post("/priceRequest")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(getPriceRequest())))
+                            .content(objectMapper.writeValueAsString(getPriceRequest()))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -323,7 +359,8 @@ public class ControllerTestIT {
     }
 
     @Test
-    void get_price_request_status_bad_request() {
+    @WithMockUser(roles = "user")
+    void post_price_request_status_bad_request() {
 
         try {
             when(apiService.getFromPriceService(any(PriceRequest.class)))
@@ -331,7 +368,9 @@ public class ControllerTestIT {
 
             mockMvc.perform(post("/priceRequest")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(getPriceRequest())))
+                            .content(objectMapper.writeValueAsString(getPriceRequest()))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
@@ -343,7 +382,8 @@ public class ControllerTestIT {
     }
 
     @Test
-    void get_currency_request_status_ok() {
+    @WithMockUser(roles = "user")
+    void post_currency_request_status_ok() {
 
         try {
             var currencyRequest = getCurrencyRequest();
@@ -351,7 +391,9 @@ public class ControllerTestIT {
 
             var mockMvcResult = mockMvc.perform(post("/currencyRequest")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(currencyRequest)))
+                            .content(objectMapper.writeValueAsString(currencyRequest))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -369,7 +411,8 @@ public class ControllerTestIT {
 
 
     @Test
-    void get_currency_request_status_bad_request() {
+    @WithMockUser(roles = "user")
+    void post_currency_request_status_bad_request() {
 
         try {
             when(apiService.getFromCurrencyService(any(CurrencyRequest.class)))
@@ -377,7 +420,9 @@ public class ControllerTestIT {
 
             mockMvc.perform(post("/currencyRequest")
                             .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(getCurrencyRequest())))
+                            .content(objectMapper.writeValueAsString(getCurrencyRequest()))
+                            .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                            .param(csrfToken.getParameterName(), csrfToken.getToken()))
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
@@ -415,4 +460,3 @@ public class ControllerTestIT {
     }
 
 }
-*/

@@ -31,7 +31,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
 
-@PreAuthorize("hasRole('user')")
 @CrossOrigin
 @Slf4j
 @RequiredArgsConstructor
@@ -40,6 +39,7 @@ public class Controller {
 
     private final ApiService apiService;
 
+    @PreAuthorize("hasRole('user')")
     @GetMapping("/defaultProducts")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Default Products from Warehouse.")
@@ -59,6 +59,7 @@ public class Controller {
         return status(OK).body(apiService.getProductComponents());
     }
 
+    @PreAuthorize("hasRole('user')")
     @GetMapping("/products/{userName}")
     @ResponseStatus(OK)
     @Operation(summary = "Get all Products from user by username.")
@@ -70,6 +71,7 @@ public class Controller {
         return status(OK).body(apiService.getProductsFromUser(userName));
     }
 
+    @PreAuthorize("hasRole('user')")
     @DeleteMapping("/products/{id}")
     @ResponseStatus(OK)
     @Operation(summary = "Delete a product by its id.")
@@ -81,6 +83,7 @@ public class Controller {
         return status(OK).body(apiService.deleteProduct(id));
     }
 
+    @PreAuthorize("hasRole('user')")
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Operation(summary = "Create a product.")
@@ -92,6 +95,7 @@ public class Controller {
         return status(CREATED).body(apiService.createProduct(product));
     }
 
+    @PreAuthorize("hasRole('user')")
     @PutMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @Operation(summary = "Update a product.")
@@ -103,6 +107,7 @@ public class Controller {
         return status(OK).body(apiService.updateProduct(product));
     }
 
+    @PreAuthorize("hasRole('user')")
     @PostMapping(path = "/priceRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product.")
     @ResponseStatus(OK)
@@ -113,6 +118,7 @@ public class Controller {
         return status(OK).body(apiService.getFromPriceService(priceRequest));
     }
 
+    @PreAuthorize("hasRole('user')")
     @PostMapping(path = "/currencyRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get the price for a product or component in a specific currency of your choice")
     @ResponseStatus(OK)
