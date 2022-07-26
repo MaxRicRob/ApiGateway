@@ -23,7 +23,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000/*")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -38,8 +38,7 @@ public class Controller {
     public ResponseEntity<List<DefaultProduct>> getDefaultProducts() {
 
         log.info("get DefaultProducts Endpoint called");
-        //return status(OK).body(apiService.getDefaultProducts());
-        return status(OK).body(null);
+        return status(OK).body(apiService.getDefaultProducts());
     }
 
     @PreAuthorize("hasRole('user')")
@@ -49,8 +48,7 @@ public class Controller {
     public ResponseEntity<List<ProductComponent>> getProductComponents() {
 
         log.info("get ProductComponents Endpoint called");
-//        return status(OK).body(apiService.getProductComponents());
-        return status(OK).body(null);
+        return status(OK).body(apiService.getProductComponents());
     }
 
     @PreAuthorize("hasRole('user')")

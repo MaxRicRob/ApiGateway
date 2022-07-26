@@ -2,9 +2,9 @@ server:
   port: 8085
 
 spring:
-#  rabbitmq:
-#    host: rabbitmq
-#    port: 5672
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
 
 #rabbitMQ
 queue-names:
@@ -22,7 +22,7 @@ xchange:
 
 
 keycloak:
-  auth-server-url: http://localhost:8080/
+  auth-server-url: http://192.168.0.53:8080/auth/
   public-client: true
   realm: SpringBootKeycloak
   resource: login-app

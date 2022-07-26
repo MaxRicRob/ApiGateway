@@ -9,12 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -47,10 +45,10 @@ class ApplicationSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("index", "/css/*", "/js/*").permitAll()
-//                .antMatchers("/login")
-//                .hasAnyRole("user")
-//                .anyRequest()
-//                .authenticated()
+                .antMatchers("/login")
+                .hasAnyRole("user")
+                .anyRequest()
+                .authenticated()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
