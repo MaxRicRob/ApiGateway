@@ -23,7 +23,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
 
-@CrossOrigin(origins = "http://localhost:3000/*")
+@CrossOrigin
 @Slf4j
 @RequiredArgsConstructor
 @RestController
